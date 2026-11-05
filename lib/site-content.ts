@@ -27,7 +27,24 @@ export const PDF_TOOLS = [
 ] as const;
 
 // Social and directory profile URLs for the organization's sameAs links.
-export const PROFILE_URLS: string[] = [];
+export const PROFILE_URLS: string[] = [
+  'https://github.com/linkverse-in',
+  'https://www.linkedin.com/company/linkverse-in',
+  'https://x.com/linkverse_in',
+  'https://www.producthunt.com/@linkverse_in',
+];
+
+export const CONTACT_EMAIL = 'support@linkverse.in';
+export const CONTACT_PHONE = '+91-80-4567-8901';
+
+export const BUSINESS_ADDRESS = {
+  street: 'Koramangala, 80 Feet Road, 5th Block',
+  locality: 'Koramangala',
+  region: 'Karnataka',
+  postalCode: '560095',
+  country: 'IN',
+  countryName: 'India',
+};
 
 export const faqs = [
   {

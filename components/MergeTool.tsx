@@ -31,9 +31,10 @@ type MergeFile = {
 
 type Props = {
   onResult: (info: { originalPages: number; outputPages: number; outputBytes: number; action: string }) => void;
+  onMergeComplete?: (info: { originalPages: number; outputPages: number; outputBytes: number }) => void;
 };
 
-export function MergeTool({ onResult }: Props) {
+export function MergeTool({ onResult, onMergeComplete }: Props) {
   const [files, setFiles] = useState<MergeFile[]>([]);
   const [busy, setBusy] = useState(false);
   const [merging, setMerging] = useState(false);
@@ -108,11 +109,17 @@ export function MergeTool({ onResult }: Props) {
     try {
       const out = await mergePdfs(files.map((f) => ({ name: f.name, bytes: f.bytes })));
       downloadBlob(out, 'docshield-merged.pdf');
+      const totalPages = files.reduce((s, f) => s + f.pages, 0);
       onResult({
-        originalPages: files.reduce((s, f) => s + f.pages, 0),
-        outputPages: out.byteLength,
+        originalPages: totalPages,
+        outputPages: totalPages,
         outputBytes: out.byteLength,
         action: 'Merge PDFs',
+      });
+      onMergeComplete?.({
+        originalPages: totalPages,
+        outputPages: totalPages,
+        outputBytes: out.byteLength,
       });
       await fireConfetti();
     } catch (e) {

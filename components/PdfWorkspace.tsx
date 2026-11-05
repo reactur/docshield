@@ -18,7 +18,7 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
 
   return (
     <div className="min-h-screen bg-background bg-grid">
-      <div className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <div className="border-b border-border bg-primary/5">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2 text-center">
           <Lock className="h-4 w-4 text-primary" />
           <span className="text-xs font-medium text-foreground sm:text-sm">
@@ -27,7 +27,7 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
         </div>
       </div>
 
-      <header className="mx-auto max-w-7xl px-4 pb-6 pt-10 text-center">
+      <header className="mx-auto max-w-7xl px-4 pb-6 pt-8 text-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/20">
           <ShieldCheck className="h-8 w-8 text-primary-foreground" />
         </div>

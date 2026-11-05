@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Inter } from 'next/font/google';
 import { SiteFooter } from '@/components/SiteFooter';
+import { SiteNav } from '@/components/SiteNav';
 import { ADSENSE_CLIENT_ID } from '@/lib/adsense';
 import { WebMcpTools } from '@/components/WebMcpTools';
 import { siteJsonLd } from '@/lib/structured-data';
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
      crossOrigin="anonymous"></script>
       </head>
       <body className={inter.className}>
+        <SiteNav />
         {children}
         <SiteFooter />
         <Script
