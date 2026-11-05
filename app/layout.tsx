@@ -3,39 +3,12 @@ import Script from 'next/script';
 import { Inter } from 'next/font/google';
 import { SiteFooter } from '@/components/SiteFooter';
 import { ADSENSE_CLIENT_ID } from '@/lib/adsense';
-import { SITE_URL, faqs } from '@/lib/site-content';
+import { WebMcpTools } from '@/components/WebMcpTools';
+import { siteJsonLd } from '@/lib/structured-data';
+import { SITE_URL } from '@/lib/site-content';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
-
-const softwareJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: 'DocShield PDF',
-  url: SITE_URL,
-  applicationCategory: 'UtilityApplication',
-  operatingSystem: 'All',
-  description:
-    'Free browser-based PDF tool to split, merge, and redact PDFs. Files are processed on your device and never uploaded.',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
-};
-
-const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((item) => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.answer,
-    },
-  })),
-};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -85,14 +58,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
           crossOrigin="anonymous"
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
+        {siteJsonLd.map((node, index) => (
+          <script
+            key={index}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(node) }}
+          />
+        ))}
+        <WebMcpTools />
       </body>
     </html>
   );
