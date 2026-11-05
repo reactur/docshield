@@ -1,4 +1,4 @@
-export const SITE_URL = 'https://docshield.example.com';
+export const SITE_URL = 'https://linkverse.in';
 
 export const faqs = [
   {

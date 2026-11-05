@@ -15,7 +15,7 @@ export default function ContactPage() {
         Questions, bug reports, and privacy requests are welcome. Please do not send confidential
         documents here. This form accepts text only, and your PDFs never leave your device.
       </p>
-      <ContactForm />
+      {/* <ContactForm /> */}
     </LegalPage>
   );
 }
