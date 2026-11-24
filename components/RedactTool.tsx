@@ -422,8 +422,8 @@ export function RedactTool({ onResult }: Props) {
             <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">
               <div className="flex items-center gap-2 rounded-lg border border-success/30 bg-success/10 px-3 py-2 text-sm text-success">
                 <ShieldCheck className="h-4 w-4" />
-                <span className="font-medium">Redactions Flattened</span>
-                <span className="text-success/80">— Text cannot be extracted</span>
+                <span className="font-medium">Flattened on export</span>
+                <span className="text-success/80">. Always verify before sharing.</span>
               </div>
               <Button onClick={doExport} disabled={exporting || totalBoxes === 0} className="ml-auto">
                 {exporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}

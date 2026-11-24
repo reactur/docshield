@@ -131,22 +131,22 @@ const MERGE_FAQS = [
   {
     question: 'Is merging PDFs with DocShield GDPR and HIPAA compliant?',
     answer:
-      'Yes. DocShield processes all PDFs entirely in your browser using JavaScript and WebAssembly. No file is uploaded to a server, so no personal health information or personal data ever leaves your device. This supports GDPR data minimization and HIPAA-conscious workflows, though full HIPAA compliance also requires your organization\u2019s own safeguards and agreements.',
+      'Because your files never leave your device, no personal data is shared with us. That aligns well with GDPR data minimization. For HIPAA, it helps reduce exposure, but full compliance also depends on your own policies and safeguards.',
   },
   {
     question: 'Is there a file size limit for merging PDFs?',
     answer:
-      'There is no server-imposed limit. The only constraint is your device\u2019s available RAM. Since merging happens in your browser memory, very large files are limited by your computer or phone, not by DocShield. Most modern devices handle hundreds of megabytes without issue.',
+      'No limit from us. The only constraint is your device\u2019s RAM, since everything runs in your browser. Most computers handle hundreds of megabytes without trouble. If a large merge fails, close other tabs and try again.',
   },
   {
     question: 'Are my merged PDFs secure in the browser?',
     answer:
-      'Yes. All processing runs locally in your browser using pdf-lib and WebAssembly. Your PDFs are never transmitted over the network, never stored on a server, and never accessible to third parties. Closing the tab immediately clears all data from memory.',
+      'Yes. All processing happens locally. Your PDFs are not sent over the network, stored on a server, or visible to anyone else. Close the tab and everything is cleared from memory.',
   },
   {
-    question: 'Can I merge PDFs offline without an internet connection?',
+    question: 'Can I merge PDFs without an internet connection?',
     answer:
-      'After the page loads, yes. The tool runs entirely client-side, so once the page is cached you can disconnect from the internet and continue merging. No data is sent to or received from any server during the merge process.',
+      'Once the page is loaded, yes. The tool runs fully in your browser, so you can turn off your internet and keep merging. No data goes to or from any server during the process.',
   },
 ];
 
@@ -158,7 +158,7 @@ const mergeWebAppJsonLd = {
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'All (Browser-based)',
   description:
-    'Combine multiple PDF documents into one seamless file instantly. 100% free, no file size limits, and zero server uploads. Your private documents never leave your browser.',
+    'Combine multiple PDFs into one file right in your browser. Free, no file size limits, no uploads. Your documents stay on your device.';
   offers: {
     '@type': 'Offer',
     price: '0',
@@ -178,26 +178,26 @@ const mergeHowToJsonLd = {
   '@type': 'HowTo',
   name: 'How to merge PDF files without uploading',
   description:
-    'Combine multiple PDF files into one document entirely in your browser, with zero server uploads.',
+    'Combine multiple PDF files into one document in your browser. No uploads.',
   totalTime: 'PT2M',
   step: [
     {
       '@type': 'HowToStep',
       position: 1,
       name: 'Add PDF Files',
-      text: 'Drag and drop your PDF files into the merge workbench, or click to browse and select them. You can add as many files as you need.',
+      text: 'Drag and drop your PDF files into the merge area, or click to browse and pick them. Add as many as you need.';
     },
     {
       '@type': 'HowToStep',
       position: 2,
       name: 'Reorder Document Sequence',
-      text: 'Use the up and down arrows or drag each document card to arrange your files in the desired order. The top file becomes the first pages of the merged PDF.',
+      text: 'Use the arrows or drag each file to arrange them in the order you want. The top file becomes the first pages of the merged PDF.';
     },
     {
       '@type': 'HowToStep',
       position: 3,
       name: 'Download Merged PDF',
-      text: 'Click the Merge & Download button. Your combined PDF is generated instantly in your browser and downloads directly to your device. No file is uploaded to any server.',
+      text: 'Click Merge & Download. Your combined PDF is built in your browser and saved to your device. No file is uploaded anywhere.';
     },
   ],
 };

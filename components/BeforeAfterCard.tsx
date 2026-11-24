@@ -47,7 +47,7 @@ export function BeforeAfterCard({ result }: { result: ProcessResult }) {
           <Stat icon={<Download className="h-4 w-4" />} label="Output size" value={formatBytes(result.outputBytes)} />
         </div>
         <p className="text-xs text-muted-foreground">
-          Your download has started. The file was generated entirely in your browser and never touched a server.
+          Your download has started. The file was built in your browser and never uploaded anywhere.
         </p>
       </CardContent>
     </Card>

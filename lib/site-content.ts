@@ -3,14 +3,14 @@ export const SITE_URL = 'https://linkverse.in';
 export const SITE_NAME = 'DocShield PDF';
 
 export const SITE_DESCRIPTION =
-  'Free browser-based PDF tools to split, merge, and redact PDFs. Files are processed on your device and never uploaded.';
+  'Free PDF tools to split, merge, and redact documents right in your browser. No uploads, no sign-up, no watermarks.';
 
 export const PDF_TOOLS = [
   {
     slug: 'split',
     name: 'Split & Extract PDF',
     path: '/split-pdf',
-    description: 'Split a PDF into single pages or extract selected pages.',
+    description: 'Split a PDF into single pages or pull out just the pages you need.',
   },
   {
     slug: 'merge',
@@ -22,11 +22,10 @@ export const PDF_TOOLS = [
     slug: 'redact',
     name: 'Redact PDF',
     path: '/redact-pdf',
-    description: 'Draw black boxes over selected areas of a PDF.',
+    description: 'Draw black boxes over parts of a PDF before sharing it.',
   },
 ] as const;
 
-// Social and directory profile URLs for the organization's sameAs links.
 export const PROFILE_URLS: string[] = [
   'https://github.com/linkverse-in',
   'https://www.linkedin.com/company/linkverse-in',
@@ -50,26 +49,36 @@ export const faqs = [
   {
     question: 'Is DocShield PDF really private?',
     answer:
-      'Yes. Splitting, merging, and redacting all happen inside your web browser. DocShield PDF does not upload the PDFs you select and does not store them on any server.',
+      'Yes. Everything runs inside your browser. We never upload your PDFs to a server, and we do not store them anywhere.',
   },
   {
     question: 'Can I split a PDF into individual pages for free?',
     answer:
-      'Yes. Choose "Split all into ZIP" on the Split and Extract tab to receive one PDF per page in a single download. There is no watermark, and the practical size limit is your device\'s memory.',
+      'Yes. Click "Split all into ZIP" on the Split tab and you get one PDF per page in a single ZIP download. No watermark, no cost. The only limit is how much memory your device has.',
   },
   {
     question: 'Does the redaction tool permanently remove text?',
     answer:
-      'Not reliably. The redaction tool draws solid black boxes over the areas you select. The original text beneath a box can still exist in the file, so check the exported PDF before sharing it.',
+      'Not reliably. The tool draws solid black boxes on top of the page, but the text underneath can still be in the file. Always open the exported PDF and try selecting the blacked-out area. If you can highlight or copy the text, it is still there.',
   },
   {
     question: 'Can I merge more than two PDFs together?',
     answer:
-      'Yes. The Merge PDFs tab accepts as many files as you add. Reorder them with the up and down buttons or by dragging, then download one combined PDF.',
+      'Yes. Add as many files as you want to the Merge tab. Reorder them by dragging or using the arrow buttons, then download one combined PDF.',
   },
   {
     question: 'Do you store my files?',
     answer:
-      'No. DocShield PDF has no file storage. Selected files stay in your browser memory while you work and are not sent anywhere.',
+      'No. We have no file storage. Your PDFs stay in your browser memory while you work and are gone when you close the tab.',
+  },
+  {
+    question: 'What browsers does DocShield PDF work on?',
+    answer:
+      'Chrome, Firefox, Safari, and Edge on desktop. It also works on mobile browsers for iOS and Android. You just need a browser that supports WebAssembly, which all modern ones do.',
+  },
+  {
+    question: 'Is there a file size limit?',
+    answer:
+      'No server-side limit. The only constraint is your device\'s RAM. Most computers handle PDFs in the hundreds of megabytes without trouble. If a large file fails, try closing other tabs first.',
   },
 ];

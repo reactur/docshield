@@ -152,7 +152,7 @@ export function MergeTool({ onResult, onMergeComplete }: Props) {
           <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
             <CardTitle className="text-base">
               <Combine className="mr-2 inline h-4 w-4 text-primary" />
-              {files.length} document{files.length !== 1 ? 's' : ''} queued
+              {files.length} file{files.length !== 1 ? 's' : ''} ready to merge
             </CardTitle>
             <Button variant="ghost" size="sm" onClick={clearAll}>
               <X className="mr-1 h-4 w-4" /> Clear all

@@ -13,39 +13,37 @@ export default function AboutPage() {
     <LegalPage title="About & Security" updated="November 5, 2026">
       <p>
         DocShield PDF was built to split, merge, and redact PDFs without making your documents
-        someone else&apos;s data problem. Every tool runs inside your browser, so the file you open is
+        someone else&apos;s problem. Every tool runs inside your browser, so the file you open is
         never sent to our servers.
       </p>
 
       <h2>Why processing happens in your browser</h2>
       <p>
-        Most online PDF tools upload your file, process it on a remote server, and store a copy for
-        some period of time. Each upload creates another place where a document can be copied,
-        retained, or exposed. DocShield PDF removes that step: the file stays on your device from
-        start to finish.
+        Most online PDF tools ask you to upload your file, process it on a remote server, and keep
+        a copy for a while. Every upload is another chance for your document to be copied, stored,
+        or exposed. We skip that step entirely. The file stays on your device from start to finish.
       </p>
 
       <h2>GDPR and data minimization</h2>
       <p>
-        Data protection rules such as the GDPR ask organizations to collect and keep only the personal
-        data they actually need. Because DocShield PDF never receives your documents, it does not
-        hold that data at all. The only information we store is what you choose to send through the
-        contact form.
+        Rules like the GDPR ask organizations to collect and keep only the personal data they
+        actually need. Since DocShield PDF never receives your documents, we do not hold that data
+        at all. The only information we store is what you choose to send through the contact form.
       </p>
 
       <h2>HIPAA and sensitive records</h2>
       <p>
         If your work involves protected health information, a tool that never receives the file
-        reduces the data your organization shares with third parties. However, using this tool does
-        not by itself make a workflow HIPAA compliant. Your organization still needs its own
-        safeguards, policies, and agreements.
+        reduces what your organization shares with third parties. That said, using this tool does
+        not by itself make a workflow HIPAA compliant. You still need your own safeguards, policies,
+        and agreements in place.
       </p>
 
-      <h2>Known limits</h2>
+      <h2>Things to keep in mind</h2>
       <ul>
         <li>
-          Redaction draws black boxes over the page. The original text can remain in the file, so
-          always check the exported PDF before sharing it.
+          Redaction draws black boxes over the page. The text underneath can still be in the file,
+          so always check the exported PDF before sharing it.
         </li>
         <li>Your device&apos;s security matters. Anyone with access to your computer can open the files on it.</li>
         <li>Very large PDFs are limited by your device&apos;s memory.</li>

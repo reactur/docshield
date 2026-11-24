@@ -14,10 +14,10 @@ import { AD_SLOTS } from '@/lib/adsense';
 export type ToolTab = 'split' | 'merge' | 'redact';
 
 const highlights = [
-  { icon: Lock, title: 'No Uploads', desc: 'Files stay on your device — nothing is sent to a server.' },
-  { icon: Cpu, title: 'In-Browser Processing', desc: 'All work happens locally with WebAssembly.' },
-  { icon: Zap, title: 'Instant Results', desc: 'No queue, no waiting — your file is ready immediately.' },
-  { icon: FileStack, title: 'Unlimited Files', desc: 'No file size caps or daily usage limits.' },
+  { icon: Lock, title: 'No Uploads', desc: 'Your files stay on your device. Nothing gets sent anywhere.' },
+  { icon: Cpu, title: 'Runs Locally', desc: 'All processing happens on your machine, not a server.' },
+  { icon: Zap, title: 'Instant Results', desc: 'No queue or waiting. Your file is ready right away.' },
+  { icon: FileStack, title: 'No Limits', desc: 'No file size caps, no daily limits, no watermarks.' },
 ];
 
 export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
@@ -34,12 +34,11 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
             DocShield PDF
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-balance text-base text-muted-foreground">
-            Free, private PDF tools to split, merge, and redact documents — all processing happens
-            entirely in your browser. No uploads, no sign-up, no watermarks.
+            Split, merge, and redact PDFs right in your browser. No uploads, no sign-up, no watermarks. Your files never leave your device.
           </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              <ShieldCheck className="h-3.5 w-3.5" /> GDPR-ready
+              <ShieldCheck className="h-3.5 w-3.5" /> GDPR-friendly
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
               <Lock className="h-3.5 w-3.5" /> No file uploads

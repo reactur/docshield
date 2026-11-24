@@ -8,29 +8,29 @@ const comparisonRows: {
   cloud: string;
 }[] = [
   {
-    criterion: 'Server File Upload',
-    docshield: 'Never uploaded — stays in browser',
-    cloud: 'Uploaded to remote servers',
+    criterion: 'File upload required',
+    docshield: 'No, files stay in your browser',
+    cloud: 'Yes, files are uploaded to a server',
   },
   {
-    criterion: 'Privacy / GDPR Compliance',
-    docshield: 'Full by design — no data leaves device',
-    cloud: 'Partial — data stored on third-party servers',
+    criterion: 'Privacy',
+    docshield: 'No data leaves your device',
+    cloud: 'Files stored on third-party servers',
   },
   {
-    criterion: 'Daily Usage Limits',
+    criterion: 'Daily usage limits',
     docshield: 'Unlimited',
-    cloud: 'Limited (free tier caps at 2–5 files)',
+    cloud: 'Usually capped at 2 to 5 files on the free tier',
   },
   {
-    criterion: 'Processing Speed',
-    docshield: 'Instant — local WebAssembly, no network wait',
-    cloud: 'Slower — upload + queue + download',
+    criterion: 'Speed',
+    docshield: 'Instant, no upload or download wait',
+    cloud: 'Slower due to upload, processing queue, and download',
   },
   {
-    criterion: 'Pricing',
-    docshield: 'Free forever, no sign-up',
-    cloud: 'Free tier with watermarks or paywall',
+    criterion: 'Cost',
+    docshield: 'Free, no sign-up',
+    cloud: 'Free tier often adds watermarks or requires payment',
   },
 ];
 
@@ -38,7 +38,7 @@ const crossLinks = [
   {
     href: '/split-pdf',
     label: 'Split PDF',
-    desc: 'Extract or divide pages from any PDF',
+    desc: 'Pull out specific pages or split into individual files',
     icon: Scissors,
   },
   {
@@ -55,62 +55,58 @@ export function MergeSeoContent() {
       <section className="space-y-10">
         <article className="space-y-3">
           <h2 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
-            How to merge PDF files offline without uploading?
+            How to merge PDF files without uploading them
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            DocShield merges PDFs entirely inside your browser using JavaScript and WebAssembly.
-            Your files are loaded into local device memory, combined with pdf-lib, and saved as a
-            new PDF downloaded directly to you. No file travels over the internet at any point,
-            making the process fully offline after the page loads.
+            DocShield combines PDFs right inside your browser. Your files load into your device&apos;s
+            memory, get merged using pdf-lib, and the result downloads straight to you. Nothing
+            travels over the internet once the page is loaded.
           </p>
         </article>
 
         <article className="space-y-3">
           <h2 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
-            Why do online PDF converters pose data privacy risks?
+            Why most online PDF mergers are a privacy risk
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Traditional online PDF mergers upload your files to cloud servers, process them remotely,
-            and often store copies for hours or days. Each upload creates a new data exposure point
-            where sensitive documents like bank statements, contracts, and tax filings could be
-            intercepted, retained, or breached. DocShield eliminates this risk by processing
-            everything locally in your browser, so your documents never touch a server.
+            Most free PDF mergers work by uploading your file to a server, processing it there, and
+            sending the result back. That means a copy of your document sits on someone else&apos;s
+            computer, sometimes for hours or days. If that document is a bank statement, a contract,
+            or a tax form, you are trusting a third party with sensitive data. DocShield avoids this
+            entirely by doing the work on your own device.
           </p>
         </article>
 
         <article className="space-y-3">
           <h2 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
-            Is there a file size limit for merging PDFs with DocShield?
+            File size limits when merging PDFs
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            There is no server-imposed file size limit. The only constraint is your device&apos;s
-            available RAM, since all processing happens in your browser memory. Most modern computers
-            and phones can handle hundreds of megabytes of PDF data without issue. If a merge fails
-            on very large files, closing other browser tabs frees memory and usually resolves it.
+            We do not set a file size limit. The only thing that could get in the way is your
+            device&apos;s available memory, since everything runs in your browser. Most modern
+            computers and phones can handle PDFs in the hundreds of megabytes. If a large merge
+            fails, closing other browser tabs usually helps.
           </p>
         </article>
 
         <article className="space-y-3">
           <h2 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
-            Does merging preserve bookmarks and form fields?
+            Do bookmarks and form fields survive the merge?
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            The merge tool copies all pages from each source PDF into a new document. Embedded
-            content such as images, text, and vector graphics is preserved. Interactive form fields
-            and bookmarks from the original files may not carry over to the merged output — if you
-            need those, check the result after downloading and re-add them in a PDF editor if
-            necessary.
+            All pages, text, images, and vector graphics from your source files carry over to the
+            merged output. Interactive form fields and bookmarks might not transfer. If you need
+            those, check the result after downloading and add them back in a PDF editor if needed.
           </p>
         </article>
       </section>
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
-          DocShield PDF vs. Traditional Cloud Converters
+          DocShield PDF vs. cloud-based converters
         </h2>
         <p className="text-sm text-muted-foreground">
-          A side-by-side comparison of how DocShield PDF stacks up against popular cloud-based
-          tools like iLovePDF and Smallpdf.
+          Here is how DocShield compares to popular tools like iLovePDF and Smallpdf.
         </p>
         <div className="overflow-x-auto scrollbar-thin rounded-xl border border-border">
           <table className="w-full text-sm">
@@ -119,7 +115,7 @@ export function MergeSeoContent() {
                 <th className="px-4 py-3 text-left font-semibold text-foreground">Criteria</th>
                 <th className="px-4 py-3 text-left font-semibold text-primary">DocShield PDF</th>
                 <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
-                  Cloud Converters (iLovePDF / Smallpdf)
+                  Cloud converters (iLovePDF / Smallpdf)
                 </th>
               </tr>
             </thead>
@@ -151,24 +147,24 @@ export function MergeSeoContent() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
-          How to combine PDF files in 3 steps
+          Combine PDF files in 3 steps
         </h2>
         <div className="grid gap-4 sm:grid-cols-3">
           {[
             {
               num: 1,
-              title: 'Add PDF Files',
-              desc: 'Drag and drop your PDFs into the workbench above, or click to browse and select them.',
+              title: 'Add your PDFs',
+              desc: 'Drag and drop your files into the area above, or click to browse and pick them.',
             },
             {
               num: 2,
-              title: 'Reorder Document Sequence',
-              desc: 'Use the arrows or drag cards to arrange files in the order you want them merged.',
+              title: 'Arrange the order',
+              desc: 'Use the arrows or drag files to put them in the order you want them combined.',
             },
             {
               num: 3,
-              title: 'Download Merged PDF',
-              desc: 'Click Merge & Download. Your combined PDF is built in your browser and saved instantly.',
+              title: 'Download the result',
+              desc: 'Click Merge & Download. Your combined PDF is built in your browser and saved right away.',
             },
           ].map((step) => (
             <div
@@ -187,9 +183,9 @@ export function MergeSeoContent() {
 
       <section className="grid gap-4 sm:grid-cols-3">
         {[
-          { icon: Lock, title: 'Zero Server Upload', text: 'Files never leave your device.' },
-          { icon: Cpu, title: 'WebAssembly Speed', text: 'Local processing with pdf-lib.' },
-          { icon: ShieldCheck, title: 'Unlimited File Size', text: 'Only limited by your RAM.' },
+          { icon: Lock, title: 'No server upload', text: 'Files never leave your device.' },
+          { icon: Cpu, title: 'Runs on your machine', text: 'All processing is done locally.' },
+          { icon: ShieldCheck, title: 'No file size cap', text: 'Limited only by your device\'s RAM.' },
         ].map((f) => (
           <div key={f.title} className="rounded-xl border border-border bg-card p-5 shadow-sm">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -203,7 +199,7 @@ export function MergeSeoContent() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
-          Frequently Asked Questions
+          Frequently asked questions
         </h2>
         <div className="space-y-3">
           {mergeFaqs.map((item) => (

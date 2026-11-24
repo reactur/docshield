@@ -10,10 +10,10 @@ import { AdSenseBanner } from '@/components/AdSenseBanner';
 import { AD_SLOTS } from '@/lib/adsense';
 
 const highlights = [
-  { icon: Lock, title: 'Zero Server Upload', desc: 'Files never leave your device.' },
-  { icon: Cpu, title: 'WebAssembly Speed', desc: 'Local processing with pdf-lib.' },
-  { icon: FileStack, title: 'Unlimited File Size', desc: 'Only limited by your device RAM.' },
-  { icon: Zap, title: 'Instant Download', desc: 'No queue — your file is ready now.' },
+  { icon: Lock, title: 'No Server Upload', desc: 'Files never leave your device.' },
+  { icon: Cpu, title: 'Runs Locally', desc: 'All processing happens on your machine.' },
+  { icon: FileStack, title: 'No File Size Cap', desc: 'Limited only by your device memory.' },
+  { icon: Zap, title: 'Instant Download', desc: 'No queue. Your file is ready now.' },
 ];
 
 export function MergePage() {
@@ -25,7 +25,7 @@ export function MergePage() {
         <div className="mx-auto max-w-5xl px-4 py-3 text-center">
           <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground sm:text-sm">
             <Lock className="h-4 w-4 text-primary" />
-            100% Client-Side. Your files never touch a server or leave your device.
+            Your files never leave your device. Everything runs in your browser.
           </span>
         </div>
       </div>
@@ -42,21 +42,20 @@ export function MergePage() {
 
       <header className="mx-auto max-w-5xl px-4 py-8 text-center">
         <h1 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          Merge PDF Files Privately &amp; Instantly
+          Merge PDF files in your browser
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-balance text-base text-muted-foreground">
-          Combine multiple PDFs directly on your device. Fast, unlimited, and completely offline —
-          no uploads, no watermarks, no sign-up.
+          Combine multiple PDFs into one file right on your device. No uploads, no watermarks, no sign-up. Just drag, drop, and download.
         </p>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-            <Lock className="h-3.5 w-3.5" /> Zero Server Upload
+            <Lock className="h-3.5 w-3.5" /> No uploads
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Zap className="h-3.5 w-3.5" /> WebAssembly Speed
+            <Zap className="h-3.5 w-3.5" /> Instant
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Layers className="h-3.5 w-3.5" /> Unlimited File Size
+            <Layers className="h-3.5 w-3.5" /> No file size cap
           </span>
         </div>
       </header>

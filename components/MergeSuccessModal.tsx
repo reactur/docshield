@@ -38,7 +38,7 @@ export function MergeSuccessModal({ open, onClose, result }: MergeSuccessModalPr
             <CheckCircle2 className="h-7 w-7 text-success" />
           </div>
           <h3 className="mt-4 text-lg font-bold text-foreground">
-            Your Combined PDF is Ready!
+            Your merged PDF is ready
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
             {result.outputPages > 0
@@ -46,7 +46,7 @@ export function MergeSuccessModal({ open, onClose, result }: MergeSuccessModalPr
               : 'Your merged PDF has been downloaded.'}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            100% processed in your browser — no file was uploaded.
+            Built in your browser. No file was uploaded.
           </p>
         </div>
 
