@@ -183,6 +183,25 @@ export function SplitTool({ onResult }: Props) {
     }
   };
 
+  const doDownloadCurrent = async () => {
+    if (!fileBytes) return;
+    setLoading(true);
+    setError(null);
+    try {
+      downloadBlob(fileBytes, `docshield-current-${pageCount}-pages.pdf`);
+      onResult({
+        originalPages: pageCount,
+        outputPages: pageCount,
+        outputBytes: fileBytes.byteLength,
+        action: 'Download current PDF',
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not download the PDF.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const doSplitSelected = async () => {
     if (!fileBytes || selected.size === 0) return;
     setLoading(true);
@@ -447,6 +466,16 @@ export function SplitTool({ onResult }: Props) {
                   {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Files className="mr-2 h-4 w-4" />}
                   Split all {pageCount} pages (ZIP)
                 </Button>
+                <Button
+                  variant="outline"
+                  onClick={doDownloadCurrent}
+                  disabled={loading || busy}
+                  className="flex-1"
+                  size="lg"
+                >
+                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
+                  Download current {pageCount} pages (PDF)
+                </Button>
                 {selectedCount > 0 && (
                   <Button
                     variant="outline"
@@ -464,19 +493,19 @@ export function SplitTool({ onResult }: Props) {
               <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2 lg:grid-cols-4">
                 <p className="flex items-start gap-1.5">
                   <FileText className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                  <span><strong className="text-foreground">Extract</strong> — combine selected pages into one PDF.</span>
+                  <span><strong className="text-foreground">Extract</strong>: combine selected pages into one PDF.</span>
                 </p>
                 <p className="flex items-start gap-1.5">
                   <Scissors className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                  <span><strong className="text-foreground">Split selected</strong> — each selected page becomes its own PDF, zipped.</span>
+                  <span><strong className="text-foreground">Split selected</strong>: each selected page becomes its own PDF, zipped.</span>
                 </p>
                 <p className="flex items-start gap-1.5">
                   <Files className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                  <span><strong className="text-foreground">Split all</strong> — every page becomes a separate PDF, zipped.</span>
+                  <span><strong className="text-foreground">Split all</strong>: every page becomes a separate PDF, zipped.</span>
                 </p>
                 <p className="flex items-start gap-1.5">
                   <Trash2 className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                  <span><strong className="text-foreground">Delete</strong> — remove selected pages from the working file.</span>
+                  <span><strong className="text-foreground">Delete</strong>: remove selected pages from the working file.</span>
                 </p>
               </div>
             </div>

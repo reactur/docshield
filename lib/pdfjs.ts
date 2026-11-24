@@ -10,9 +10,10 @@ export async function getPdfjs(): Promise<typeof pdfjsLib> {
     throw new Error('pdfjs can only be used in the browser');
   }
   if (!configured) {
-    // Use the CDN worker that matches the installed version. This avoids
-    // Next.js SSR/build errors and keeps the bundle small.
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+    // Self-hosted worker copied from node_modules into public/pdf. A CDN
+    // worker can be blocked (offline, ad blockers, CSP) which silently broke
+    // all page previews.
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf/pdf.worker.min.mjs';
     configured = true;
   }
   return pdfjsLib;

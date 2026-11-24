@@ -308,7 +308,7 @@ export function RedactTool({ onResult }: Props) {
   return (
     <div className="space-y-5">
       {!file ? (
-        <Dropzone onFiles={handleFile} hint="Draw blackout boxes over sensitive text — flattened on export" />
+        <Dropzone onFiles={handleFile} hint="Draw blackout boxes over sensitive text, flattened on export" />
       ) : (
         <Card className="border-border shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">

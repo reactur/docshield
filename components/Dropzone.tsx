@@ -19,7 +19,7 @@ export function Dropzone({
   multiple = false,
   className,
   label = 'Drop PDF here or click to browse',
-  hint = 'Your file stays on your device — nothing is uploaded',
+  hint = 'Your file stays on your device, nothing is uploaded',
 }: DropzoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
