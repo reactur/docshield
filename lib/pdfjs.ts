@@ -1,8 +1,9 @@
 'use client';
 
 import * as pdfjsLib from 'pdfjs-dist';
-
-// Lazily configure the worker only in the browser.
+// Bundled by webpack 5 via new URL(..., import.meta.url), so the worker ships
+// in the deployment itself. A public/ or CDN copy can 404 or be blocked after
+// deployment (Netlify routing, MIME type, CSP, ad blockers).
 let configured = false;
 
 export async function getPdfjs(): Promise<typeof pdfjsLib> {
@@ -10,10 +11,9 @@ export async function getPdfjs(): Promise<typeof pdfjsLib> {
     throw new Error('pdfjs can only be used in the browser');
   }
   if (!configured) {
-    // Self-hosted worker copied from node_modules into public/pdf. A CDN
-    // worker can be blocked (offline, ad blockers, CSP) which silently broke
-    // all page previews.
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf/pdf.worker.min.mjs';
+    pdfjsLib.GlobalWorkerOptions.workerPort = new Worker(
+      new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url),
+    );
     configured = true;
   }
   return pdfjsLib;

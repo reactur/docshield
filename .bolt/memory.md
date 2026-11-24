@@ -5,6 +5,7 @@
 - PDF manipulation web app built with Next.js
 - Core tools include: Split, Extract, Delete, Rotate, Redact
 - Audience: general users needing quick PDF editing in-browser without installing software
+- Deployed at linkverse.in/pdf/
 
 ## Brand personality & voice
 
@@ -27,6 +28,8 @@
 - Fresh `ArrayBuffer` view created only when needed for pdf.js rendering
 - React thumbnail keys: be careful with page renumbering after delete — using `key={t.page}` causes conflicts when pages are renumbered
 - Three distinct PDF actions: Extract (selected pages → single PDF), Split all (each page → separate PDFs in ZIP), Delete selected (remove from working file)
+- PDF.js worker is bundled via webpack (Next.js native worker syntax) rather than served as a static file from `public/`
+- Static worker files in `public/` may not be served correctly across deployment environments; bundling avoids cross-origin/fetch failures
 
 ## Open questions & assumptions
 
