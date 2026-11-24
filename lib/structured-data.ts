@@ -158,7 +158,7 @@ const mergeWebAppJsonLd = {
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'All (Browser-based)',
   description:
-    'Combine multiple PDFs into one file right in your browser. Free, no file size limits, no uploads. Your documents stay on your device.';
+    'Combine multiple PDFs into one file right in your browser. Free, no file size limits, no uploads. Your documents stay on your device.',
   offers: {
     '@type': 'Offer',
     price: '0',
@@ -185,19 +185,19 @@ const mergeHowToJsonLd = {
       '@type': 'HowToStep',
       position: 1,
       name: 'Add PDF Files',
-      text: 'Drag and drop your PDF files into the merge area, or click to browse and pick them. Add as many as you need.';
+      text: 'Drag and drop your PDF files into the merge area, or click to browse and pick them. Add as many as you need.',
     },
     {
       '@type': 'HowToStep',
       position: 2,
       name: 'Reorder Document Sequence',
-      text: 'Use the arrows or drag each file to arrange them in the order you want. The top file becomes the first pages of the merged PDF.';
+      text: 'Use the arrows or drag each file to arrange them in the order you want. The top file becomes the first pages of the merged PDF.',
     },
     {
       '@type': 'HowToStep',
       position: 3,
       name: 'Download Merged PDF',
-      text: 'Click Merge & Download. Your combined PDF is built in your browser and saved to your device. No file is uploaded anywhere.';
+      text: 'Click Merge & Download. Your combined PDF is built in your browser and saved to your device. No file is uploaded anywhere.',
     },
   ],
 };

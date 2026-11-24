@@ -33,7 +33,7 @@ type Props = {
 
 export function SplitTool({ onResult }: Props) {
   const [file, setFile] = useState<File | null>(null);
-  const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
+  const [fileBytes, setFileBytes] = useState<Uint8Array | null>(null);
   const [thumbs, setThumbs] = useState<Thumb[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [selected, setSelected] = useState<Set<number>>(new Set());
@@ -64,7 +64,8 @@ export function SplitTool({ onResult }: Props) {
     setBusy(true);
     try {
       const buf = await readFileAsArrayBuffer(f);
-      setFileBytes(buf);
+      const bytes = new Uint8Array(buf);
+      setFileBytes(bytes);
       const pdf = await loadPdfDocument(buf.slice(0));
       pdfDocRef.current = pdf;
       const count = pdf.numPages;
@@ -83,6 +84,21 @@ export function SplitTool({ onResult }: Props) {
       setRendering(false);
     }
   }, []);
+
+  const reloadThumbs = async (bytes: Uint8Array) => {
+    const buf = bytes.buffer.slice(0) as ArrayBuffer;
+    const pdf = await loadPdfDocument(buf.slice(0));
+    pdfDocRef.current = pdf;
+    const count = pdf.numPages;
+    setPageCount(count);
+    setThumbs([]);
+    const generated: Thumb[] = [];
+    for (let i = 1; i <= count; i++) {
+      const src = await generateThumbnailDataUrl(pdf, i, 0.4);
+      generated.push({ page: i, src });
+      setThumbs([...generated]);
+    }
+  };
 
   const togglePage = (p: number) => {
     setSelected((prev) => {
@@ -133,7 +149,7 @@ export function SplitTool({ onResult }: Props) {
       });
       await fireConfetti();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Extraction failed.');
+      setError(e instanceof Error ? e.message : 'Could not extract pages.');
     } finally {
       setLoading(false);
     }
@@ -162,38 +178,48 @@ export function SplitTool({ onResult }: Props) {
       });
       await fireConfetti();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Split failed.');
+      setError(e instanceof Error ? e.message : 'Could not split the PDF.');
     } finally {
       setLoading(false);
     }
   };
 
-  const doDeletePages = async (pagesToDelete: number[]) => {
+  const doDeleteSelected = async () => {
+    if (!fileBytes || selected.size === 0) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const pagesToDelete = Array.from(selected).sort((a, b) => a - b).map((p) => p - 1);
+      const remaining = Array.from({ length: pageCount }, (_, i) => i).filter(
+        (i) => !pagesToDelete.includes(i),
+      );
+      const out = await deleteAndRearrangePdf(fileBytes, remaining);
+      setFileBytes(out);
+      setSelected(new Set());
+      setRangeInput('');
+      await reloadThumbs(out);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not delete pages.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const doDeletePage = async (pageIndex: number) => {
     if (!fileBytes) return;
     setBusy(true);
     setError(null);
     try {
       const remaining = Array.from({ length: pageCount }, (_, i) => i).filter(
-        (i) => !pagesToDelete.includes(i),
+        (i) => i !== pageIndex,
       );
       const out = await deleteAndRearrangePdf(fileBytes, remaining);
-      const newBuf = out.buffer.slice(0) as ArrayBuffer;
-      setFileBytes(newBuf);
+      setFileBytes(out);
       setSelected(new Set());
       setRangeInput('');
-      const pdf = await loadPdfDocument(newBuf.slice(0));
-      pdfDocRef.current = pdf;
-      const count = pdf.numPages;
-      setPageCount(count);
-      setThumbs([]);
-      const generated: Thumb[] = [];
-      for (let i = 1; i <= count; i++) {
-        const src = await generateThumbnailDataUrl(pdf, i, 0.4);
-        generated.push({ page: i, src });
-        setThumbs([...generated]);
-      }
+      await reloadThumbs(out);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Delete failed.');
+      setError(e instanceof Error ? e.message : 'Could not delete page.');
     } finally {
       setBusy(false);
     }
@@ -205,14 +231,14 @@ export function SplitTool({ onResult }: Props) {
     setError(null);
     try {
       const out = await rotatePage(fileBytes, pageIndex, 90);
-      const newBuf = out.buffer.slice(0) as ArrayBuffer;
-      setFileBytes(newBuf);
-      const pdf = await loadPdfDocument(newBuf.slice(0));
+      setFileBytes(out);
+      const buf = out.buffer.slice(0) as ArrayBuffer;
+      const pdf = await loadPdfDocument(buf.slice(0));
       pdfDocRef.current = pdf;
       const src = await generateThumbnailDataUrl(pdf, pageIndex + 1, 0.4);
       setThumbs((prev) => prev.map((t) => (t.page === pageIndex + 1 ? { ...t, src } : t)));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Rotate failed.');
+      setError(e instanceof Error ? e.message : 'Could not rotate page.');
     } finally {
       setBusy(false);
     }
@@ -224,7 +250,7 @@ export function SplitTool({ onResult }: Props) {
   return (
     <div className="space-y-5">
       {!file ? (
-        <Dropzone onFiles={handleFile} hint="100% client-side — your file never leaves this device" />
+        <Dropzone onFiles={handleFile} hint="Your file stays on your device. Nothing is uploaded." />
       ) : (
         <Card className="border-border shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
@@ -251,11 +277,10 @@ export function SplitTool({ onResult }: Props) {
             {(busy || rendering) && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                {rendering ? 'Rendering page previews…' : 'Processing…'}
+                {rendering ? 'Loading page previews…' : 'Working…'}
               </div>
             )}
 
-            {/* Quick selection actions */}
             <div className="flex flex-wrap items-center gap-2">
               <Button variant="outline" size="sm" onClick={selectAll} disabled={busy || rendering}>
                 Select all
@@ -271,7 +296,6 @@ export function SplitTool({ onResult }: Props) {
               </Button>
             </div>
 
-            {/* Range input */}
             <div className="flex flex-wrap items-end gap-3">
               <div className="flex-1 min-w-[200px]">
                 <label className="mb-1 block text-xs font-medium text-muted-foreground">
@@ -289,13 +313,12 @@ export function SplitTool({ onResult }: Props) {
               </Button>
             </div>
 
-            {/* Page grid */}
             <div className="grid max-h-[420px] grid-cols-2 gap-3 overflow-y-auto scrollbar-thin pr-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {thumbs.map((t) => {
                 const isSel = selected.has(t.page);
                 return (
                   <div
-                    key={t.page}
+                    key={`p${t.page}`}
                     className={cn(
                       'group relative overflow-hidden rounded-lg border-2 transition-all',
                       isSel
@@ -307,7 +330,7 @@ export function SplitTool({ onResult }: Props) {
                       onClick={() => togglePage(t.page)}
                       className="block w-full"
                       aria-pressed={isSel}
-                      aria-label={`Page ${t.page}${isSel ? ' — selected' : ''}`}
+                      aria-label={`Page ${t.page}${isSel ? ', selected' : ''}`}
                     >
                       {t.src ? (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -316,22 +339,20 @@ export function SplitTool({ onResult }: Props) {
                           alt={`Page ${t.page}`}
                           className={cn(
                             'aspect-[3/4] w-full object-contain bg-white transition-opacity',
-                            isSel && 'opacity-60',
+                            isSel && 'opacity-50',
                           )}
                         />
                       ) : (
                         <div className="aspect-[3/4] w-full animate-shimmer rounded" />
                       )}
                     </button>
-                    {/* Selection checkmark — always visible when selected */}
-                    <div className="pointer-events-none absolute left-1.5 top-1.5">
-                      {isSel && (
+                    {isSel && (
+                      <div className="pointer-events-none absolute left-1.5 top-1.5">
                         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground shadow">
                           <CheckCircle2 className="h-4 w-4" />
                         </span>
-                      )}
-                    </div>
-                    {/* Hover actions */}
+                      </div>
+                    )}
                     <div className="pointer-events-auto absolute bottom-1 right-1 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                       <button
                         title="Rotate 90°"
@@ -341,8 +362,8 @@ export function SplitTool({ onResult }: Props) {
                         <RotateCw className="h-3.5 w-3.5" />
                       </button>
                       <button
-                        title="Delete page"
-                        onClick={() => doDeletePages([t.page - 1])}
+                        title="Delete this page"
+                        onClick={() => doDeletePage(t.page - 1)}
                         className="flex h-7 w-7 items-center justify-center rounded bg-white/90 text-foreground shadow hover:text-destructive"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -356,45 +377,66 @@ export function SplitTool({ onResult }: Props) {
               })}
             </div>
 
-            {/* Download actions */}
             <div className="space-y-3 border-t border-border pt-4">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="secondary" className="gap-1">
                   <Scissors className="h-3 w-3" /> {selectedCount} page{selectedCount !== 1 ? 's' : ''} selected
                 </Badge>
-                {selectedCount > 0 && selectedCount <= 10 && (
+                {selectedCount > 0 && selectedCount <= 12 && (
                   <span className="text-xs text-muted-foreground">
                     Pages: {selectedList.join(', ')}
                   </span>
                 )}
               </div>
+
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Button
                   onClick={doExtract}
-                  disabled={loading || selectedCount === 0}
+                  disabled={loading || busy || selectedCount === 0}
                   className="flex-1"
                   size="lg"
                 >
                   {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileText className="mr-2 h-4 w-4" />}
-                  Extract {selectedCount > 0 ? `${selectedCount} ` : ''}page{selectedCount !== 1 ? 's' : ''} to PDF
+                  Extract {selectedCount > 0 ? `${selectedCount} ` : ''}page{selectedCount !== 1 ? 's' : ''}
                 </Button>
                 <Button
                   variant="secondary"
                   onClick={doSplitAll}
-                  disabled={loading}
+                  disabled={loading || busy}
                   className="flex-1"
                   size="lg"
                 >
                   {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Files className="mr-2 h-4 w-4" />}
-                  Split all into ZIP
+                  Split all pages (ZIP)
                 </Button>
+                {selectedCount > 0 && (
+                  <Button
+                    variant="outline"
+                    onClick={doDeleteSelected}
+                    disabled={loading || busy}
+                    className="flex-1 sm:flex-none"
+                    size="lg"
+                  >
+                    {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />}
+                    Delete {selectedCount} selected
+                  </Button>
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">
-                <FileText className="mr-1 inline h-3 w-3" />
-                Extract copies your selected pages into a single new PDF.
-                <Files className="mx-1 inline h-3 w-3" />
-                Split all creates one separate PDF per page, bundled in a ZIP download.
-              </p>
+
+              <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
+                <p className="flex items-start gap-1.5">
+                  <FileText className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
+                  <span><strong className="text-foreground">Extract</strong> saves the pages you picked into one new PDF.</span>
+                </p>
+                <p className="flex items-start gap-1.5">
+                  <Files className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
+                  <span><strong className="text-foreground">Split all</strong> makes a separate PDF for every page, zipped together.</span>
+                </p>
+                <p className="flex items-start gap-1.5">
+                  <Trash2 className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
+                  <span><strong className="text-foreground">Delete</strong> removes the selected pages from the working file.</span>
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>

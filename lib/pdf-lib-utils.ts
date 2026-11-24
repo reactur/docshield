@@ -20,14 +20,14 @@ export async function savePdf(doc: PDFDocument): Promise<Uint8Array> {
 }
 
 export async function getPageSizes(
-  data: ArrayBuffer,
+  data: ArrayBuffer | Uint8Array,
 ): Promise<{ width: number; height: number }[]> {
   const source = await loadPdfBytes(data);
   return source.getPages().map((p) => p.getSize());
 }
 
 export async function splitPdfPages(
-  data: ArrayBuffer,
+  data: ArrayBuffer | Uint8Array,
   ranges: number[][],
 ): Promise<{ name: string; bytes: Uint8Array }[]> {
   const source = await loadPdfBytes(data);
@@ -47,7 +47,7 @@ export async function splitPdfPages(
 }
 
 export async function extractSelectedPages(
-  data: ArrayBuffer,
+  data: ArrayBuffer | Uint8Array,
   pages: number[],
 ): Promise<Uint8Array> {
   if (pages.length === 0) throw new Error('No pages selected.');
@@ -59,7 +59,7 @@ export async function extractSelectedPages(
 }
 
 export async function deleteAndRearrangePdf(
-  data: ArrayBuffer,
+  data: ArrayBuffer | Uint8Array,
   pageOrder: number[],
 ): Promise<Uint8Array> {
   const source = await loadPdfBytes(data);
@@ -70,7 +70,7 @@ export async function deleteAndRearrangePdf(
 }
 
 export async function rotatePage(
-  data: ArrayBuffer,
+  data: ArrayBuffer | Uint8Array,
   pageIndex: number,
   deltaDegrees: number,
 ): Promise<Uint8Array> {
@@ -99,7 +99,7 @@ export async function mergePdfs(
 // text cannot be selected or extracted. Coordinates are in user-space units
 // with origin at the bottom-left of the page.
 export async function applyRedactions(
-  data: ArrayBuffer,
+  data: ArrayBuffer | Uint8Array,
   redactionsByPage: Record<number, RedactionBox[]>,
 ): Promise<Uint8Array> {
   const source = await loadPdfBytes(data);
