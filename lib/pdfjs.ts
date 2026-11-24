@@ -18,9 +18,10 @@ export async function getPdfjs(): Promise<typeof pdfjsLib> {
   return pdfjsLib;
 }
 
-export async function loadPdfDocument(data: ArrayBuffer) {
+export async function loadPdfDocument(data: ArrayBuffer | Uint8Array) {
   const pdfjs = await getPdfjs();
-  const loadingTask = pdfjs.getDocument({ data });
+  const bytes = data instanceof Uint8Array ? data : new Uint8Array(data);
+  const loadingTask = pdfjs.getDocument({ data: bytes.slice() });
   return loadingTask.promise;
 }
 

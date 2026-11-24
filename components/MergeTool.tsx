@@ -50,7 +50,7 @@ export function MergeTool({ onResult, onMergeComplete }: Props) {
         const buf = await readFileAsArrayBuffer(f);
         let pages = 0;
         try {
-          const pdf = await loadPdfDocument(buf.slice(0));
+          const pdf = await loadPdfDocument(buf);
           pages = pdf.numPages;
         } catch {
           pages = 0;

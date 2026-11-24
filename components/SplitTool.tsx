@@ -66,7 +66,7 @@ export function SplitTool({ onResult }: Props) {
       const buf = await readFileAsArrayBuffer(f);
       const bytes = new Uint8Array(buf);
       setFileBytes(bytes);
-      const pdf = await loadPdfDocument(buf.slice(0));
+      const pdf = await loadPdfDocument(bytes);
       pdfDocRef.current = pdf;
       const count = pdf.numPages;
       setPageCount(count);
@@ -86,8 +86,7 @@ export function SplitTool({ onResult }: Props) {
   }, []);
 
   const reloadThumbs = async (bytes: Uint8Array) => {
-    const buf = bytes.buffer.slice(0) as ArrayBuffer;
-    const pdf = await loadPdfDocument(buf.slice(0));
+    const pdf = await loadPdfDocument(bytes);
     pdfDocRef.current = pdf;
     const count = pdf.numPages;
     setPageCount(count);
@@ -184,6 +183,36 @@ export function SplitTool({ onResult }: Props) {
     }
   };
 
+  const doSplitSelected = async () => {
+    if (!fileBytes || selected.size === 0) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const pages = Array.from(selected).sort((a, b) => a - b);
+      const ranges = pages.map((p) => [p]);
+      const zip = new JSZip();
+      const results = await splitPdfPages(fileBytes, ranges);
+      for (const r of results) {
+        zip.file(r.name, r.bytes);
+      }
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      triggerDownload(url, 'docshield-split-selected.zip');
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      onResult({
+        originalPages: pageCount,
+        outputPages: pages.length,
+        outputBytes: blob.size,
+        action: `Split ${pages.length} selected pages (ZIP)`,
+      });
+      await fireConfetti();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not split selected pages.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const doDeleteSelected = async () => {
     if (!fileBytes || selected.size === 0) return;
     setBusy(true);
@@ -232,8 +261,7 @@ export function SplitTool({ onResult }: Props) {
     try {
       const out = await rotatePage(fileBytes, pageIndex, 90);
       setFileBytes(out);
-      const buf = out.buffer.slice(0) as ArrayBuffer;
-      const pdf = await loadPdfDocument(buf.slice(0));
+      const pdf = await loadPdfDocument(out);
       pdfDocRef.current = pdf;
       const src = await generateThumbnailDataUrl(pdf, pageIndex + 1, 0.4);
       setThumbs((prev) => prev.map((t) => (t.page === pageIndex + 1 ? { ...t, src } : t)));
@@ -401,13 +429,23 @@ export function SplitTool({ onResult }: Props) {
                 </Button>
                 <Button
                   variant="secondary"
+                  onClick={doSplitSelected}
+                  disabled={loading || busy || selectedCount === 0}
+                  className="flex-1"
+                  size="lg"
+                >
+                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Scissors className="mr-2 h-4 w-4" />}
+                  Split {selectedCount > 0 ? `${selectedCount} ` : ''}selected (ZIP)
+                </Button>
+                <Button
+                  variant="outline"
                   onClick={doSplitAll}
                   disabled={loading || busy}
                   className="flex-1"
                   size="lg"
                 >
                   {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Files className="mr-2 h-4 w-4" />}
-                  Split all pages (ZIP)
+                  Split all {pageCount} pages (ZIP)
                 </Button>
                 {selectedCount > 0 && (
                   <Button
@@ -423,18 +461,22 @@ export function SplitTool({ onResult }: Props) {
                 )}
               </div>
 
-              <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
+              <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2 lg:grid-cols-4">
                 <p className="flex items-start gap-1.5">
                   <FileText className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                  <span><strong className="text-foreground">Extract</strong> saves the pages you picked into one new PDF.</span>
+                  <span><strong className="text-foreground">Extract</strong> — combine selected pages into one PDF.</span>
+                </p>
+                <p className="flex items-start gap-1.5">
+                  <Scissors className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
+                  <span><strong className="text-foreground">Split selected</strong> — each selected page becomes its own PDF, zipped.</span>
                 </p>
                 <p className="flex items-start gap-1.5">
                   <Files className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                  <span><strong className="text-foreground">Split all</strong> makes a separate PDF for every page, zipped together.</span>
+                  <span><strong className="text-foreground">Split all</strong> — every page becomes a separate PDF, zipped.</span>
                 </p>
                 <p className="flex items-start gap-1.5">
                   <Trash2 className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                  <span><strong className="text-foreground">Delete</strong> removes the selected pages from the working file.</span>
+                  <span><strong className="text-foreground">Delete</strong> — remove selected pages from the working file.</span>
                 </p>
               </div>
             </div>

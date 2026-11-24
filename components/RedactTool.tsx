@@ -42,7 +42,7 @@ type PageState = {
 
 export function RedactTool({ onResult }: Props) {
   const [file, setFile] = useState<File | null>(null);
-  const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
+  const [fileBytes, setFileBytes] = useState<Uint8Array | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [zoom, setZoom] = useState(1.2);
@@ -86,8 +86,9 @@ export function RedactTool({ onResult }: Props) {
     setBusy(true);
     try {
       const buf = await readFileAsArrayBuffer(f);
-      setFileBytes(buf);
-      const pdf = await loadPdfDocument(buf.slice(0));
+      const bytes = new Uint8Array(buf);
+      setFileBytes(bytes);
+      const pdf = await loadPdfDocument(bytes);
       pdfDocRef.current = pdf;
       setPageCount(pdf.numPages);
       setCurrentPage(1);
