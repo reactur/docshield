@@ -51,8 +51,8 @@ export function Dropzone({
       className={cn(
         'group relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-12 text-center transition-colors',
         dragging
-          ? 'border-primary bg-primary/10'
-          : 'border-border bg-secondary/20 hover:border-primary/60 hover:bg-secondary/30',
+          ? 'border-primary bg-primary/5'
+          : 'border-border bg-secondary/30 hover:border-primary/50 hover:bg-secondary/50',
         className,
       )}
     >
@@ -64,7 +64,7 @@ export function Dropzone({
         className="hidden"
         onChange={(e) => handleFiles(e.target.files)}
       />
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 text-primary transition-transform group-hover:scale-110">
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform group-hover:scale-110">
         <UploadCloud className="h-7 w-7" />
       </div>
       <div>

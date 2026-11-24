@@ -140,7 +140,7 @@ export function RedactTool({ onResult }: Props) {
       const el = document.createElement('div');
       el.setAttribute('data-redact-box', 'true');
       el.className =
-        'absolute border-2 border-emerald-400/70 bg-black/90 cursor-pointer group/box';
+        'absolute border-2 border-primary/70 bg-black/90 cursor-pointer group/box';
       el.style.left = `${box.x * zoom}px`;
       el.style.top = `${box.y * zoom}px`;
       el.style.width = `${box.width * zoom}px`;
@@ -186,7 +186,7 @@ export function RedactTool({ onResult }: Props) {
     const startY = e.clientY - rect.top;
     const boxEl = document.createElement('div');
     boxEl.className =
-      'absolute border-2 border-dashed border-emerald-400 bg-black/70 pointer-events-none';
+      'absolute border-2 border-dashed border-primary bg-black/70 pointer-events-none';
     boxEl.style.left = `${startX}px`;
     boxEl.style.top = `${startY}px`;
     overlay.appendChild(boxEl);
@@ -309,7 +309,7 @@ export function RedactTool({ onResult }: Props) {
       {!file ? (
         <Dropzone onFiles={handleFile} hint="Draw blackout boxes over sensitive text — flattened on export" />
       ) : (
-        <Card className="border-border/60">
+        <Card className="border-border shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
             <div className="min-w-0">
               <CardTitle className="flex items-center gap-2 truncate text-base">
@@ -387,7 +387,7 @@ export function RedactTool({ onResult }: Props) {
             </div>
 
             {/* Viewer */}
-            <div className="overflow-auto rounded-lg border border-border bg-secondary/10 p-4 scrollbar-thin">
+            <div className="overflow-auto rounded-lg border border-border bg-secondary/20 p-4 scrollbar-thin">
               <div className="mx-auto relative inline-block" style={{ width: pageViewport.width || 'auto' }}>
                 {rendering && (
                   <div className="absolute inset-0 z-10 flex items-center justify-center bg-secondary/40 backdrop-blur-sm">

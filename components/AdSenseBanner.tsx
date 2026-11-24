@@ -64,7 +64,7 @@ export function AdSenseBanner({
           />
         ) : (
           <div
-            className="flex h-full w-full items-center justify-center rounded-lg border border-dashed border-border/60 bg-secondary/20"
+            className="flex h-full w-full items-center justify-center rounded-lg border border-dashed border-border bg-secondary/20"
             style={{ minHeight: height }}
           >
             <span className="px-2 text-center text-[11px] text-muted-foreground/60">

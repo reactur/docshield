@@ -26,8 +26,8 @@ export function SiteNav() {
     <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80" onClick={() => setMobileOpen(false)}>
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent shadow-md shadow-primary/20">
-            <ShieldCheck className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+            <ShieldCheck className="h-5 w-5" />
           </div>
           <span className="text-base font-bold tracking-tight text-foreground">
             DocShield <span className="text-primary">PDF</span>
@@ -44,8 +44,8 @@ export function SiteNav() {
                 className={cn(
                   'flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                   isActive(link.href)
-                    ? 'bg-primary/15 text-primary'
-                    : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground',
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground',
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -56,7 +56,7 @@ export function SiteNav() {
         </div>
 
         <button
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground transition-colors hover:bg-secondary/40 md:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground transition-colors hover:bg-secondary md:hidden"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label="Toggle navigation"
           aria-expanded={mobileOpen}
@@ -78,8 +78,8 @@ export function SiteNav() {
                   className={cn(
                     'flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                     isActive(link.href)
-                      ? 'bg-primary/15 text-primary'
-                      : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground',
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted-foreground hover:bg-secondary hover:text-foreground',
                   )}
                 >
                   <Icon className="h-4 w-4" />

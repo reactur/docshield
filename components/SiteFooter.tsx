@@ -9,7 +9,7 @@ const legalLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-secondary/20">
+    <footer className="border-t border-border bg-secondary/30">
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-8 text-center text-xs text-muted-foreground">
         <nav aria-label="Legal and company" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           {legalLinks.map((link) => (

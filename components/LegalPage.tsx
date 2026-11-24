@@ -11,7 +11,7 @@ export function LegalPage({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-background bg-grid">
+    <div className="min-h-screen bg-background">
       <header className="mx-auto max-w-3xl px-4 pt-10">
         <Link
           href="/"

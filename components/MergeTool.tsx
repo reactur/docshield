@@ -148,7 +148,7 @@ export function MergeTool({ onResult, onMergeComplete }: Props) {
       )}
 
       {files.length > 0 && (
-        <Card className="border-border/60">
+        <Card className="border-border shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
             <CardTitle className="text-base">
               <Combine className="mr-2 inline h-4 w-4 text-primary" />
@@ -173,7 +173,7 @@ export function MergeTool({ onResult, onMergeComplete }: Props) {
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={() => onDrop(i)}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg border border-border bg-secondary/20 px-3 py-2.5 transition-colors hover:border-primary/40',
+                    'flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2.5 shadow-sm transition-colors hover:border-primary/40',
                     dragIndex === i && 'opacity-50',
                   )}
                 >

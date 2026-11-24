@@ -52,7 +52,6 @@ const crossLinks = [
 export function MergeSeoContent() {
   return (
     <div className="space-y-12">
-      {/* Direct-answer sections for AI/GEO citation */}
       <section className="space-y-10">
         <article className="space-y-3">
           <h2 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
@@ -90,9 +89,21 @@ export function MergeSeoContent() {
             on very large files, closing other browser tabs frees memory and usually resolves it.
           </p>
         </article>
+
+        <article className="space-y-3">
+          <h2 className="text-xl font-semibold leading-tight text-foreground sm:text-2xl">
+            Does merging preserve bookmarks and form fields?
+          </h2>
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            The merge tool copies all pages from each source PDF into a new document. Embedded
+            content such as images, text, and vector graphics is preserved. Interactive form fields
+            and bookmarks from the original files may not carry over to the merged output — if you
+            need those, check the result after downloading and re-add them in a PDF editor if
+            necessary.
+          </p>
+        </article>
       </section>
 
-      {/* Comparison table */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
           DocShield PDF vs. Traditional Cloud Converters
@@ -138,7 +149,6 @@ export function MergeSeoContent() {
         </div>
       </section>
 
-      {/* How-to steps */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
           How to combine PDF files in 3 steps
@@ -163,9 +173,9 @@ export function MergeSeoContent() {
           ].map((step) => (
             <div
               key={step.num}
-              className="rounded-xl border border-border/60 bg-secondary/20 p-5"
+              className="rounded-xl border border-border bg-card p-5 shadow-sm"
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-sm font-bold text-primary">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
                 {step.num}
               </div>
               <h3 className="mt-3 text-sm font-semibold text-foreground">{step.title}</h3>
@@ -175,15 +185,14 @@ export function MergeSeoContent() {
         </div>
       </section>
 
-      {/* Trust features */}
       <section className="grid gap-4 sm:grid-cols-3">
         {[
           { icon: Lock, title: 'Zero Server Upload', text: 'Files never leave your device.' },
           { icon: Cpu, title: 'WebAssembly Speed', text: 'Local processing with pdf-lib.' },
           { icon: ShieldCheck, title: 'Unlimited File Size', text: 'Only limited by your RAM.' },
         ].map((f) => (
-          <div key={f.title} className="rounded-xl border border-border/60 bg-secondary/20 p-5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+          <div key={f.title} className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <f.icon className="h-5 w-5" />
             </div>
             <h3 className="mt-3 text-sm font-semibold text-foreground">{f.title}</h3>
@@ -192,7 +201,6 @@ export function MergeSeoContent() {
         ))}
       </section>
 
-      {/* Merge-specific FAQ */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
           Frequently Asked Questions
@@ -201,7 +209,7 @@ export function MergeSeoContent() {
           {mergeFaqs.map((item) => (
             <details
               key={item.question}
-              className="group rounded-lg border border-border/60 bg-secondary/20 px-4 py-3 [&_summary]:cursor-pointer"
+              className="group rounded-lg border border-border bg-card px-4 py-3 shadow-sm [&_summary]:cursor-pointer"
             >
               <summary className="flex items-center justify-between text-sm font-medium text-foreground marker:content-none">
                 {item.question}
@@ -213,7 +221,6 @@ export function MergeSeoContent() {
         </div>
       </section>
 
-      {/* Cross-tool links */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
           Other free PDF tools
@@ -223,9 +230,9 @@ export function MergeSeoContent() {
             <Link
               key={link.href}
               href={link.href}
-              className="group flex items-center gap-4 rounded-xl border border-border/60 bg-secondary/20 p-5 transition-colors hover:border-primary/40 hover:bg-secondary/30"
+              className="group flex items-center gap-4 rounded-xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-secondary/30"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary transition-transform group-hover:scale-110">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-transform group-hover:scale-110">
                 <link.icon className="h-5 w-5" />
               </div>
               <div>

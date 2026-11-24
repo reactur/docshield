@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import {
   Download,
   FileArchive,
@@ -10,6 +10,8 @@ import {
   Loader2,
   CheckCircle2,
   X,
+  FileText,
+  Files,
 } from 'lucide-react';
 import { Dropzone } from '@/components/Dropzone';
 import { Button } from '@/components/ui/button';
@@ -91,6 +93,20 @@ export function SplitTool({ onResult }: Props) {
     });
   };
 
+  const selectAll = () => {
+    setSelected(new Set(Array.from({ length: pageCount }, (_, i) => i + 1)));
+  };
+
+  const selectOdd = () => {
+    const odd = Array.from({ length: pageCount }, (_, i) => i + 1).filter((p) => p % 2 === 1);
+    setSelected(new Set(odd));
+  };
+
+  const selectEven = () => {
+    const even = Array.from({ length: pageCount }, (_, i) => i + 1).filter((p) => p % 2 === 0);
+    setSelected(new Set(even));
+  };
+
   const applyRange = () => {
     const pages = parseRanges(rangeInput, pageCount);
     setSelected(new Set(pages));
@@ -129,7 +145,6 @@ export function SplitTool({ onResult }: Props) {
     setError(null);
     try {
       const ranges = Array.from({ length: pageCount }, (_, i) => [i + 1]);
-      // Build each single-page PDF and zip them.
       const zip = new JSZip();
       const results = await splitPdfPages(fileBytes, ranges);
       for (const r of results) {
@@ -162,7 +177,6 @@ export function SplitTool({ onResult }: Props) {
         (i) => !pagesToDelete.includes(i),
       );
       const out = await deleteAndRearrangePdf(fileBytes, remaining);
-      // Reload preview from new bytes.
       const newBuf = out.buffer.slice(0) as ArrayBuffer;
       setFileBytes(newBuf);
       setSelected(new Set());
@@ -195,7 +209,6 @@ export function SplitTool({ onResult }: Props) {
       setFileBytes(newBuf);
       const pdf = await loadPdfDocument(newBuf.slice(0));
       pdfDocRef.current = pdf;
-      // Re-render only the rotated thumbnail.
       const src = await generateThumbnailDataUrl(pdf, pageIndex + 1, 0.4);
       setThumbs((prev) => prev.map((t) => (t.page === pageIndex + 1 ? { ...t, src } : t)));
     } catch (e) {
@@ -206,13 +219,14 @@ export function SplitTool({ onResult }: Props) {
   };
 
   const selectedCount = selected.size;
+  const selectedList = Array.from(selected).sort((a, b) => a - b);
 
   return (
     <div className="space-y-5">
       {!file ? (
         <Dropzone onFiles={handleFile} hint="100% client-side — your file never leaves this device" />
       ) : (
-        <Card className="border-border/60">
+        <Card className="border-border shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
             <div className="min-w-0">
               <CardTitle className="flex items-center gap-2 truncate text-base">
@@ -241,26 +255,41 @@ export function SplitTool({ onResult }: Props) {
               </div>
             )}
 
-            <div className="flex flex-wrap items-end gap-3">
-              <div className="flex-1 min-w-[200px]">
-                <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                  Page ranges (e.g. 1-3, 5, 8-12)
-                </label>
-                <Input
-                  value={rangeInput}
-                  onChange={(e) => setRangeInput(e.target.value)}
-                  placeholder="1-3, 5, 8-12"
-                  className="font-mono text-sm"
-                />
-              </div>
-              <Button variant="secondary" size="sm" onClick={applyRange}>
-                Select ranges
+            {/* Quick selection actions */}
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" size="sm" onClick={selectAll} disabled={busy || rendering}>
+                Select all
+              </Button>
+              <Button variant="outline" size="sm" onClick={selectOdd} disabled={busy || rendering}>
+                Odd pages
+              </Button>
+              <Button variant="outline" size="sm" onClick={selectEven} disabled={busy || rendering}>
+                Even pages
               </Button>
               <Button variant="ghost" size="sm" onClick={clearSelection} disabled={selectedCount === 0}>
                 Clear
               </Button>
             </div>
 
+            {/* Range input */}
+            <div className="flex flex-wrap items-end gap-3">
+              <div className="flex-1 min-w-[200px]">
+                <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                  Or type page ranges (e.g. 1-3, 5, 8-12)
+                </label>
+                <Input
+                  value={rangeInput}
+                  onChange={(e) => setRangeInput(e.target.value)}
+                  placeholder="1-3, 5, 8-12"
+                  className="text-sm"
+                />
+              </div>
+              <Button variant="secondary" size="sm" onClick={applyRange}>
+                Select ranges
+              </Button>
+            </div>
+
+            {/* Page grid */}
             <div className="grid max-h-[420px] grid-cols-2 gap-3 overflow-y-auto scrollbar-thin pr-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {thumbs.map((t) => {
                 const isSel = selected.has(t.page);
@@ -270,7 +299,7 @@ export function SplitTool({ onResult }: Props) {
                     className={cn(
                       'group relative overflow-hidden rounded-lg border-2 transition-all',
                       isSel
-                        ? 'border-primary ring-2 ring-primary/30'
+                        ? 'border-primary ring-2 ring-primary/20'
                         : 'border-border hover:border-primary/50',
                     )}
                   >
@@ -278,63 +307,94 @@ export function SplitTool({ onResult }: Props) {
                       onClick={() => togglePage(t.page)}
                       className="block w-full"
                       aria-pressed={isSel}
+                      aria-label={`Page ${t.page}${isSel ? ' — selected' : ''}`}
                     >
                       {t.src ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={t.src}
                           alt={`Page ${t.page}`}
-                          className="aspect-[3/4] w-full object-contain bg-background"
+                          className={cn(
+                            'aspect-[3/4] w-full object-contain bg-white transition-opacity',
+                            isSel && 'opacity-60',
+                          )}
                         />
                       ) : (
                         <div className="aspect-[3/4] w-full animate-shimmer rounded" />
                       )}
                     </button>
-                    <div className="pointer-events-none absolute left-1 top-1 flex items-center gap-1">
+                    {/* Selection checkmark — always visible when selected */}
+                    <div className="pointer-events-none absolute left-1.5 top-1.5">
                       {isSel && (
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                          <CheckCircle2 className="h-3.5 w-3.5" />
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground shadow">
+                          <CheckCircle2 className="h-4 w-4" />
                         </span>
                       )}
                     </div>
+                    {/* Hover actions */}
                     <div className="pointer-events-auto absolute bottom-1 right-1 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                       <button
                         title="Rotate 90°"
                         onClick={() => doRotate(t.page - 1)}
-                        className="flex h-7 w-7 items-center justify-center rounded bg-background/90 text-foreground shadow hover:text-primary"
+                        className="flex h-7 w-7 items-center justify-center rounded bg-white/90 text-foreground shadow hover:text-primary"
                       >
                         <RotateCw className="h-3.5 w-3.5" />
                       </button>
                       <button
                         title="Delete page"
                         onClick={() => doDeletePages([t.page - 1])}
-                        className="flex h-7 w-7 items-center justify-center rounded bg-background/90 text-foreground shadow hover:text-destructive"
+                        className="flex h-7 w-7 items-center justify-center rounded bg-white/90 text-foreground shadow hover:text-destructive"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
-                    <span className="absolute bottom-1 left-1 rounded bg-background/80 px-1.5 py-0.5 text-[10px] font-medium text-foreground">
-                      Page {t.page}
+                    <span className="absolute bottom-1 left-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] font-medium text-foreground">
+                      {t.page}
                     </span>
                   </div>
                 );
               })}
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
-              <Badge variant="secondary" className="gap-1">
-                <Scissors className="h-3 w-3" /> {selectedCount} selected
-              </Badge>
-              <div className="ml-auto flex flex-wrap gap-2">
-                <Button onClick={doExtract} disabled={loading || selectedCount === 0}>
-                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
-                  Extract selected ({selectedCount})
+            {/* Download actions */}
+            <div className="space-y-3 border-t border-border pt-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="secondary" className="gap-1">
+                  <Scissors className="h-3 w-3" /> {selectedCount} page{selectedCount !== 1 ? 's' : ''} selected
+                </Badge>
+                {selectedCount > 0 && selectedCount <= 10 && (
+                  <span className="text-xs text-muted-foreground">
+                    Pages: {selectedList.join(', ')}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Button
+                  onClick={doExtract}
+                  disabled={loading || selectedCount === 0}
+                  className="flex-1"
+                  size="lg"
+                >
+                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileText className="mr-2 h-4 w-4" />}
+                  Extract {selectedCount > 0 ? `${selectedCount} ` : ''}page{selectedCount !== 1 ? 's' : ''} to PDF
                 </Button>
-                <Button variant="secondary" onClick={doSplitAll} disabled={loading}>
-                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileArchive className="mr-2 h-4 w-4" />}
+                <Button
+                  variant="secondary"
+                  onClick={doSplitAll}
+                  disabled={loading}
+                  className="flex-1"
+                  size="lg"
+                >
+                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Files className="mr-2 h-4 w-4" />}
                   Split all into ZIP
                 </Button>
               </div>
+              <p className="text-xs text-muted-foreground">
+                <FileText className="mr-1 inline h-3 w-3" />
+                Extract copies your selected pages into a single new PDF.
+                <Files className="mx-1 inline h-3 w-3" />
+                Split all creates one separate PDF per page, bundled in a ZIP download.
+              </p>
             </div>
           </CardContent>
         </Card>

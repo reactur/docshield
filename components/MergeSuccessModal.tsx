@@ -1,9 +1,7 @@
 'use client';
 
-import { CheckCircle2, Download, X } from 'lucide-react';
+import { CheckCircle2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AdSenseBanner } from '@/components/AdSenseBanner';
-import { AD_SLOTS } from '@/lib/adsense';
 
 type MergeSuccessModalProps = {
   open: boolean;
@@ -20,7 +18,7 @@ export function MergeSuccessModal({ open, onClose, result }: MergeSuccessModalPr
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4"
       onClick={onClose}
     >
       <div
@@ -52,19 +50,8 @@ export function MergeSuccessModal({ open, onClose, result }: MergeSuccessModalPr
           </p>
         </div>
 
-        <div className="mt-5 flex justify-center">
-          <AdSenseBanner
-            slotId={AD_SLOTS.rectangle}
-            width={300}
-            height={250}
-            format="rectangle"
-            label="SPONSORED"
-          />
-        </div>
-
         <div className="mt-5 flex justify-center gap-3">
           <Button variant="secondary" size="sm" onClick={onClose}>
-            <Download className="mr-1.5 h-4 w-4" />
             Done
           </Button>
         </div>

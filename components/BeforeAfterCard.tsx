@@ -14,8 +14,8 @@ export type ProcessResult = {
 export function BeforeAfterCard({ result }: { result: ProcessResult }) {
   if (!result) {
     return (
-      <Card className="border-dashed border-border/60 bg-secondary/10">
-        <CardContent className="flex flex-col items-center gap-2 py-10 text-center">
+      <Card className="mt-6 border-dashed border-border bg-secondary/20">
+        <CardContent className="flex flex-col items-center gap-2 py-8 text-center">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground">
             <Layers className="h-5 w-5" />
           </div>
@@ -30,7 +30,7 @@ export function BeforeAfterCard({ result }: { result: ProcessResult }) {
 
   const pagesChanged = result.originalPages - result.outputPages;
   return (
-    <Card className="animate-float-in border-primary/30 bg-primary/5">
+    <Card className="mt-6 animate-float-in border-primary/30 bg-primary/5 shadow-sm">
       <CardContent className="space-y-4 py-5">
         <div className="flex items-center gap-2">
           <CheckCircle2 className="h-5 w-5 text-success" />
@@ -56,7 +56,7 @@ export function BeforeAfterCard({ result }: { result: ProcessResult }) {
 
 function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-border/60 bg-secondary/20 px-3 py-2.5">
+    <div className="rounded-lg border border-border bg-card px-3 py-2.5">
       <div className="flex items-center gap-1.5 text-muted-foreground">
         {icon}
         <span className="text-[11px] uppercase tracking-wide">{label}</span>
