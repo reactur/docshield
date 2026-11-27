@@ -238,9 +238,9 @@ export async function protectPdf(
   ownerPassword?: string,
 ): Promise<Uint8Array> {
   const source = await loadPdfBytes(data);
-  return source.save({
-    useObjectStreams: false,
+  await source.encrypt({
     userPassword,
     ownerPassword: ownerPassword ?? userPassword,
   });
+  return source.save();
 }
