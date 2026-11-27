@@ -20,9 +20,9 @@ export const PDF_TOOLS = [
   },
   {
     slug: 'redact',
-    name: 'Redact PDF',
+    name: 'PDF Blackout',
     path: '/redact-pdf',
-    description: 'Draw black boxes over parts of a PDF before sharing it.',
+    description: 'Draw black boxes over parts of a PDF before sharing it. Text underneath stays in the file.',
   },
   {
     slug: 'compress',
@@ -41,6 +41,18 @@ export const PDF_TOOLS = [
     name: 'Organize PDF',
     path: '/organize-pdf',
     description: 'Reorder, rotate, and delete pages with a drag-and-drop view.',
+  },
+  {
+    slug: 'jpg-to-pdf',
+    name: 'JPG to PDF',
+    path: '/jpg-to-pdf',
+    description: 'Combine JPG, PNG, or WebP images into one PDF, with page size and margin options.',
+  },
+  {
+    slug: 'unlock',
+    name: 'Unlock PDF',
+    path: '/unlock-pdf',
+    description: 'Remove a password from a PDF you own, right in your browser.',
   },
   {
     slug: 'add-image',
@@ -108,9 +120,9 @@ export const faqs = [
       'Yes. Click "Split all into ZIP" on the Split tab and you get one PDF per page in a single ZIP download. No watermark, no cost. The only limit is how much memory your device has.',
   },
   {
-    question: 'Does the redaction tool permanently remove text?',
+    question: 'Does the blackout tool permanently remove text?',
     answer:
-      'Not reliably. The tool draws solid black boxes on top of the page, but the text underneath can still be in the file. Always open the exported PDF and try selecting the blacked-out area. If you can highlight or copy the text, it is still there.',
+      'No. It draws solid black boxes on top of the page, but the text underneath stays in the file. For truly sensitive documents, print the blacked-out file and scan it back in — that is the only reliable way to remove the text layer here. Always open the exported PDF and try selecting the covered area first.',
   },
   {
     question: 'Can I merge more than two PDFs together?',

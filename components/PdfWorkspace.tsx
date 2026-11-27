@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Scissors, Combine, EyeOff, ShieldCheck, Lock, Check, Cpu, Zap, FileStack } from 'lucide-react';
+import { Scissors, Combine, EyeOff, ShieldCheck, Check, Cpu, Zap, FileStack } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SplitTool } from '@/components/SplitTool';
 import { MergeTool } from '@/components/MergeTool';
@@ -26,7 +26,7 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-secondary/40">
-        <div className="mx-auto max-w-5xl px-4 py-8 text-center sm:py-10">
+        <div className="mx-auto max-w-5xl px-4 py-12 text-center sm:py-16">
           <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
             <ShieldCheck className="h-7 w-7" />
           </div>
@@ -65,8 +65,8 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
             </TabsTrigger>
             <TabsTrigger value="redact" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <EyeOff className="h-4 w-4" />
-              <span className="hidden sm:inline">Redact &amp; Blackout</span>
-              <span className="sm:hidden">Redact</span>
+              <span className="hidden sm:inline">Blackout</span>
+              <span className="sm:hidden">Blackout</span>
             </TabsTrigger>
           </TabsList>
 
@@ -82,20 +82,6 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
         </Tabs>
 
         <BeforeAfterCard result={result} />
-
-        <section className="mt-10">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {highlights.map((h) => (
-              <div key={h.title} className="rounded-xl border border-border bg-card p-5 shadow-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <h.icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-3 text-sm font-semibold text-foreground">{h.title}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{h.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
 
         <div className="mt-10">
           <SeoContent />

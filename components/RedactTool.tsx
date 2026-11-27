@@ -308,7 +308,7 @@ export function RedactTool({ onResult }: Props) {
   return (
     <div className="space-y-5">
       {!file ? (
-        <Dropzone onFiles={handleFile} hint="Draw blackout boxes over sensitive text, flattened on export" />
+        <Dropzone onFiles={handleFile} hint="Draw blackout boxes over sensitive content. The text underneath stays in the file — not permanent redaction." />
       ) : (
         <Card className="border-border shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
@@ -318,7 +318,7 @@ export function RedactTool({ onResult }: Props) {
                 <span className="truncate">{file.name}</span>
               </CardTitle>
               <p className="mt-1 text-xs text-muted-foreground">
-                {pageCount} pages · {formatBytes(file.size)} · {totalBoxes} redaction box{totalBoxes !== 1 ? 'es' : ''}
+                {pageCount} pages · {formatBytes(file.size)} · {totalBoxes} blackout box{totalBoxes !== 1 ? 'es' : ''}
               </p>
             </div>
             <Button variant="ghost" size="sm" onClick={reset} className="shrink-0">
@@ -421,14 +421,15 @@ export function RedactTool({ onResult }: Props) {
 
             {/* Export */}
             <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">
-              <div className="flex items-center gap-2 rounded-lg border border-success/30 bg-success/10 px-3 py-2 text-sm text-success">
-                <ShieldCheck className="h-4 w-4" />
-                <span className="font-medium">Flattened on export</span>
-                <span className="text-success/80">. Always verify before sharing.</span>
+              <div className="flex items-start gap-2 rounded-lg border border-warning/40 bg-warning/10 px-3 py-2 text-sm text-foreground">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+                <span>
+                  <strong className="font-semibold">Not permanent redaction.</strong> Blackout boxes sit on top of the page — the text underneath stays in the file. For truly sensitive documents, print and re-scan instead.
+                </span>
               </div>
               <Button onClick={doExport} disabled={exporting || totalBoxes === 0} className="ml-auto">
                 {exporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
-                Export Redacted PDF ({totalBoxes})
+                Export Blackout PDF ({totalBoxes})
               </Button>
             </div>
           </CardContent>

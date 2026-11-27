@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   Scissors, Combine, EyeOff, ShieldCheck, Menu, X,
   Image as ImageIcon, Type, PenTool, Stamp, Lock, ChevronDown, FileDown,
-  FileImage, ArrowLeftRight,
+  FileImage, ArrowLeftRight, LockOpen,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
@@ -14,7 +14,7 @@ const PRIMARY_LINKS = [
   { href: '/split-pdf', label: 'Split PDF', icon: Scissors },
   { href: '/merge-pdf', label: 'Merge PDF', icon: Combine },
   { href: '/compress-pdf', label: 'Compress PDF', icon: FileDown },
-  { href: '/redact-pdf', label: 'Redact PDF', icon: EyeOff },
+  { href: '/redact-pdf', label: 'PDF Blackout', icon: EyeOff },
   { href: '/pdf-to-jpg', label: 'PDF to JPG', icon: FileImage },
   { href: '/organize-pdf', label: 'Organize PDF', icon: ArrowLeftRight },
 ];
@@ -25,6 +25,8 @@ const MORE_LINKS = [
   { href: '/add-signature-pdf', label: 'Add Signature', icon: PenTool },
   { href: '/watermark-pdf', label: 'Watermark PDF', icon: Stamp },
   { href: '/protect-pdf', label: 'Protect PDF', icon: Lock },
+  { href: '/unlock-pdf', label: 'Unlock PDF', icon: LockOpen },
+  { href: '/jpg-to-pdf', label: 'JPG to PDF', icon: FileImage },
 ];
 
 const ALL_LINKS = [...PRIMARY_LINKS, ...MORE_LINKS];

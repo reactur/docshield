@@ -2,15 +2,20 @@ import type { Metadata } from 'next';
 import { PdfWorkspace } from '@/components/PdfWorkspace';
 
 export const metadata: Metadata = {
-  title: 'Redact PDF Online Free | Black Out Sensitive Info Privately',
+  title: 'PDF Blackout Online Free | Cover Sensitive Info in a PDF',
   description:
-    'Draw black redaction boxes over sensitive information in a PDF, free and in your browser. Check the exported file before sharing, because the text underneath may remain.',
-  keywords: ['redact pdf', 'redact pdf online free', 'black out pdf', 'pdf redaction tool', 'private pdf redaction'],
+    'Draw black boxes over sensitive information in a PDF, free and in your browser. This is a visual blackout, not permanent redaction: the text underneath stays in the file. Check the output before sharing.',
+  keywords: ['pdf blackout', 'black out pdf', 'hide text in pdf', 'cover text in pdf'],
   alternates: { canonical: '/redact-pdf' },
   openGraph: {
-    title: 'Redact PDF Online Free | DocShield PDF',
-    description: 'Black out sensitive areas of a PDF privately in your browser.',
+    title: 'PDF Blackout Online Free | DocShield PDF',
+    description: 'Draw black boxes over sensitive areas of a PDF privately in your browser.',
     url: '/redact-pdf',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'PDF Blackout Online Free | DocShield PDF',
+    description: 'Draw black boxes over sensitive areas of a PDF privately in your browser.',
   },
 };
 

@@ -5,7 +5,7 @@ export const dynamic = 'force-static';
 
 const PATHS = [
   '/', '/split-pdf', '/merge-pdf', '/compress-pdf', '/redact-pdf',
-  '/pdf-to-jpg', '/organize-pdf',
+  '/pdf-to-jpg', '/organize-pdf', '/jpg-to-pdf', '/unlock-pdf',
   '/add-image-pdf', '/add-text-pdf', '/add-signature-pdf',
   '/watermark-pdf', '/protect-pdf',
   '/about', '/privacy', '/terms', '/contact',

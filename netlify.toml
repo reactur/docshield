@@ -26,6 +26,16 @@ to = "/pdf-to-jpg/index.html"
 status = 200
 
 [[redirects]]
+from = "/jpg-to-pdf"
+to = "/jpg-to-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/unlock-pdf"
+to = "/unlock-pdf/index.html"
+status = 200
+
+[[redirects]]
 from = "/organize-pdf"
 to = "/organize-pdf/index.html"
 status = 200
