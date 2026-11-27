@@ -3,7 +3,7 @@ export const SITE_URL = 'https://linkverse.in';
 export const SITE_NAME = 'DocShield PDF';
 
 export const SITE_DESCRIPTION =
-  'Free PDF tools to split, merge, and redact documents right in your browser. No uploads, no sign-up, no watermarks.';
+  'Free PDF tools to split, merge, redact, add images, text, signatures, watermarks, and protect documents right in your browser. No uploads, no sign-up.';
 
 export const PDF_TOOLS = [
   {
@@ -24,6 +24,36 @@ export const PDF_TOOLS = [
     path: '/redact-pdf',
     description: 'Draw black boxes over parts of a PDF before sharing it.',
   },
+  {
+    slug: 'add-image',
+    name: 'Add Image to PDF',
+    path: '/add-image-pdf',
+    description: 'Place images on any page, drag, resize, and copy across pages.',
+  },
+  {
+    slug: 'add-text',
+    name: 'Add Text to PDF',
+    path: '/add-text-pdf',
+    description: 'Type text onto any page with custom size and color.',
+  },
+  {
+    slug: 'add-signature',
+    name: 'Add Signature to PDF',
+    path: '/add-signature-pdf',
+    description: 'Draw or upload a signature and place it on any page.',
+  },
+  {
+    slug: 'watermark',
+    name: 'Watermark PDF',
+    path: '/watermark-pdf',
+    description: 'Add a text watermark to every page with custom style.',
+  },
+  {
+    slug: 'protect',
+    name: 'Protect PDF',
+    path: '/protect-pdf',
+    description: 'Add a password to your PDF so only authorized people can open it.',
+  },
 ] as const;
 
 export const PROFILE_URLS: string[] = [
@@ -34,7 +64,10 @@ export const PROFILE_URLS: string[] = [
 ];
 
 export const CONTACT_EMAIL = 'support@linkverse.in';
-export const CONTACT_PHONE = '+91-80-4567-8901';
+export const CONTACT_PHONE = '+91-9550066495';
+export const CONTACT_WHATSAPP = '919550066495';
+export const DEVELOPER_NAME = 'Yeshwanth C';
+export const DEVELOPER_WEBSITE = 'https://yeshwanthc.in';
 
 export const BUSINESS_ADDRESS = {
   street: 'Koramangala, 80 Feet Road, 5th Block',

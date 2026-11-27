@@ -1,6 +1,6 @@
 'use client';
 
-import { PDFDocument, degrees, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, degrees, rgb, StandardFonts } from '@cantoo/pdf-lib';
 
 export type RedactionBox = {
   // Coordinates stored in PDF user-space units (origin bottom-left).
