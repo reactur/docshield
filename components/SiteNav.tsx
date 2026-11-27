@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Scissors, Combine, EyeOff, ShieldCheck, Menu, X,
-  Image as ImageIcon, Type, PenTool, Stamp, Lock, ChevronDown,
+  Image as ImageIcon, Type, PenTool, Stamp, Lock, ChevronDown, FileDown,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
@@ -12,10 +12,12 @@ import { cn } from '@/lib/utils';
 const PRIMARY_LINKS = [
   { href: '/split-pdf', label: 'Split PDF', icon: Scissors },
   { href: '/merge-pdf', label: 'Merge PDF', icon: Combine },
+  { href: '/compress-pdf', label: 'Compress PDF', icon: FileDown },
   { href: '/redact-pdf', label: 'Redact PDF', icon: EyeOff },
 ];
 
 const MORE_LINKS = [
+  { href: '/compress-pdf', label: 'Compress PDF', icon: FileDown },
   { href: '/add-image-pdf', label: 'Add Image to PDF', icon: ImageIcon },
   { href: '/add-text-pdf', label: 'Add Text to PDF', icon: Type },
   { href: '/add-signature-pdf', label: 'Add Signature', icon: PenTool },

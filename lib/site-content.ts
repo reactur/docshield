@@ -25,6 +25,12 @@ export const PDF_TOOLS = [
     description: 'Draw black boxes over parts of a PDF before sharing it.',
   },
   {
+    slug: 'compress',
+    name: 'Compress PDF',
+    path: '/compress-pdf',
+    description: 'Shrink PDF file size without uploading your document.',
+  },
+  {
     slug: 'add-image',
     name: 'Add Image to PDF',
     path: '/add-image-pdf',

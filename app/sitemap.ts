@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/site-content';
 export const dynamic = 'force-static';
 
 const PATHS = [
-  '/', '/split-pdf', '/merge-pdf', '/redact-pdf',
+  '/', '/split-pdf', '/merge-pdf', '/compress-pdf', '/redact-pdf',
   '/add-image-pdf', '/add-text-pdf', '/add-signature-pdf',
   '/watermark-pdf', '/protect-pdf',
   '/about', '/privacy', '/terms', '/contact',

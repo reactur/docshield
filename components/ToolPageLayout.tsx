@@ -51,7 +51,11 @@ export function ToolPageLayout({
         </p>
       </header>
 
-      <section className="border-b border-border">
+      <main className="mx-auto max-w-5xl px-4 pb-10">
+        {children}
+      </main>
+
+      <section className="border-y border-border bg-secondary/20">
         <div className="mx-auto grid max-w-5xl gap-4 px-4 py-8 sm:grid-cols-2 lg:grid-cols-4">
           {highlights.map((h) => (
             <div key={h.title} className="rounded-xl border border-border bg-card p-5 shadow-sm">
@@ -64,10 +68,6 @@ export function ToolPageLayout({
           ))}
         </div>
       </section>
-
-      <main className="mx-auto max-w-5xl px-4 py-10">
-        {children}
-      </main>
     </div>
   );
 }

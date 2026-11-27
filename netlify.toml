@@ -1,6 +1,71 @@
 [build]
 command = "npx next build"
-publish = ".next"
+publish = "out"
 
-[[plugins]]
-package = "@netlify/plugin-nextjs"
+# Static export: every page is emitted as a directory (e.g. /split-pdf/index.html).
+# Map pretty URLs to the exported HTML files so refreshing a deep link
+# no longer 404s on Netlify.
+[[redirects]]
+from = "/split-pdf"
+to = "/split-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/merge-pdf"
+to = "/merge-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/compress-pdf"
+to = "/compress-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/redact-pdf"
+to = "/redact-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/add-image-pdf"
+to = "/add-image-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/add-text-pdf"
+to = "/add-text-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/add-signature-pdf"
+to = "/add-signature-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/watermark-pdf"
+to = "/watermark-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/protect-pdf"
+to = "/protect-pdf/index.html"
+status = 200
+
+[[redirects]]
+from = "/about"
+to = "/about/index.html"
+status = 200
+
+[[redirects]]
+from = "/contact"
+to = "/contact/index.html"
+status = 200
+
+[[redirects]]
+from = "/privacy"
+to = "/privacy/index.html"
+status = 200
+
+[[redirects]]
+from = "/terms"
+to = "/terms/index.html"
+status = 200

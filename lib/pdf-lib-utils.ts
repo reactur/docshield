@@ -1,6 +1,7 @@
 'use client';
 
 import { PDFDocument, degrees, rgb, StandardFonts } from '@cantoo/pdf-lib';
+import { loadPdfDocument, renderPageToCanvas } from '@/lib/pdfjs';
 
 export type RedactionBox = {
   // Coordinates stored in PDF user-space units (origin bottom-left).
@@ -74,13 +75,13 @@ export async function rotatePage(
   pageIndex: number,
   deltaDegrees: number,
 ): Promise<Uint8Array> {
-  const source = await loadPdfBytes(data);
-  const pages = source.getPages();
+  const onlySource = await loadPdfBytes(data);
+  const pages = onlySource.getPages();
   const page = pages[pageIndex];
   if (!page) throw new Error('Page not found.');
   const current = page.getRotation().angle;
   page.setRotation(degrees((current + deltaDegrees) % 360));
-  return source.save();
+  return onlySource.save();
 }
 
 export async function mergePdfs(
@@ -230,6 +231,50 @@ export async function addWatermarkToPages(
     });
   }
   return source.save();
+}
+
+async function rasterizePageToJpeg(
+  pdfBytes: Uint8Array,
+  pageIndex: number,
+  scale: number,
+  quality: number,
+): Promise<Uint8Array> {
+  const pdf = await loadPdfDocument(pdfBytes);
+  const offscreen = document.createElement('canvas');
+  await renderPageToCanvas(pdf, pageIndex + 1, offscreen, scale);
+  const blob: Blob | null = await new Promise((resolve) =>
+    offscreen.toBlob((b) => resolve(b), 'image/jpeg', quality),
+  );
+  if (!blob) throw new Error('Could not compress page image.');
+  const buf = await blob.arrayBuffer();
+  return new Uint8Array(buf);
+}
+
+// Rasterizes each page to a flattened JPEG and rebuilds the PDF from those
+// images. Dropping vector operators and font subsets is where most of the
+// size reduction comes from; image quality scales with the chosen level.
+export async function compressPdf(
+  data: ArrayBuffer | Uint8Array,
+  level: 'low' | 'medium' | 'high',
+): Promise<Uint8Array> {
+  const bytes = data instanceof Uint8Array ? data : new Uint8Array(data);
+  const quality = level === 'low' ? 0.75 : level === 'medium' ? 0.55 : 0.35;
+  const scale = level === 'low' ? 1.2 : level === 'medium' ? 1 : 0.75;
+
+  const doc = await loadPdfBytes(bytes);
+  const out = await PDFDocument.create();
+  const pageCount = doc.getPageCount();
+  const sizes = await getPageSizes(bytes);
+
+  for (let i = 0; i < pageCount; i++) {
+    const jpeg = await rasterizePageToJpeg(bytes, i, scale, quality);
+    const image = await out.embedJpg(jpeg);
+    const { width, height } = sizes[i];
+    const page = out.addPage([width, height]);
+    page.drawImage(image, { x: 0, y: 0, width, height });
+  }
+
+  return out.save({ useObjectStreams: true });
 }
 
 export async function protectPdf(

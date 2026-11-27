@@ -26,7 +26,7 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-secondary/40">
-        <div className="mx-auto max-w-5xl px-4 py-12 text-center sm:py-16">
+        <div className="mx-auto max-w-5xl px-4 py-8 text-center sm:py-10">
           <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
             <ShieldCheck className="h-7 w-7" />
           </div>
@@ -49,20 +49,6 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
           </div>
         </div>
       </header>
-
-      <section className="border-b border-border">
-        <div className="mx-auto grid max-w-5xl gap-4 px-4 py-8 sm:grid-cols-2 lg:grid-cols-4">
-          {highlights.map((h) => (
-            <div key={h.title} className="rounded-xl border border-border bg-card p-5 shadow-sm">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <h.icon className="h-5 w-5" />
-              </div>
-              <h3 className="mt-3 text-sm font-semibold text-foreground">{h.title}</h3>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{h.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
 
       <main className="mx-auto max-w-5xl px-4 py-10">
         <Tabs defaultValue={defaultTab} className="w-full">
@@ -96,6 +82,20 @@ export function PdfWorkspace({ defaultTab }: { defaultTab: ToolTab }) {
         </Tabs>
 
         <BeforeAfterCard result={result} />
+
+        <section className="mt-10">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {highlights.map((h) => (
+              <div key={h.title} className="rounded-xl border border-border bg-card p-5 shadow-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <h.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-3 text-sm font-semibold text-foreground">{h.title}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{h.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
         <div className="mt-10">
           <SeoContent />
