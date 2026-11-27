@@ -289,3 +289,112 @@ export async function protectPdf(
   });
   return source.save();
 }
+
+export async function isPdfEncrypted(data: ArrayBuffer | Uint8Array): Promise<boolean> {
+  const bytes = data instanceof Uint8Array ? data : new Uint8Array(data);
+  const doc = await PDFDocument.load(bytes, { ignoreEncryption: true, updateMetadata: false });
+  return doc.isEncrypted;
+}
+
+// Decrypts with the user-supplied password and returns a clean, unencrypted
+// copy. Throws a known error message for wrong passwords so the UI can react.
+export async function unlockPdf(
+  data: ArrayBuffer | Uint8Array,
+  password: string,
+): Promise<Uint8Array> {
+  const bytes = data instanceof Uint8Array ? data : new Uint8Array(data);
+  try {
+    const doc = await PDFDocument.load(bytes, { password });
+    return await doc.save({ useObjectStreams: false });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : '';
+    if (msg.includes('Password incorrect') || msg.includes('NEEDS PASSWORD')) {
+      throw new Error('Password incorrect');
+    }
+    throw e;
+  }
+}
+
+export type ImageToPdfOptions = {
+  pageSize: 'a4' | 'a3' | 'letter' | 'legal' | 'original';
+  orientation: 'portrait' | 'landscape';
+  margin: number;
+  fit: 'contain' | 'cover';
+};
+
+const PAGE_DIMENSIONS: Record<Exclude<ImageToPdfOptions['pageSize'], 'original'>, [number, number]> = {
+  a4: [595.28, 841.89],
+  a3: [841.89, 1190.55],
+  letter: [612, 792],
+  legal: [612, 1008],
+};
+
+export async function buildPdfFromImages(
+  images: { bytes: Uint8Array; type: string; rotated?: boolean }[],
+  options: ImageToPdfOptions,
+): Promise<Uint8Array> {
+  const out = await PDFDocument.create();
+
+  for (const image of images) {
+    // Draw through a canvas: normalizes format, applies rotation, and re-encodes
+    // so embedJpg always receives data it can handle regardless of source type.
+    const bitmap = await createImageBitmap(new Blob([image.bytes as BlobPart]));
+    const canvas = document.createElement('canvas');
+    const swap = image.rotated;
+    canvas.width = swap ? bitmap.height : bitmap.width;
+    canvas.height = swap ? bitmap.width : bitmap.height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Canvas 2D context unavailable');
+    if (swap) {
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(Math.PI / 2);
+      ctx.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2);
+    } else {
+      ctx.drawImage(bitmap, 0, 0);
+    }
+    bitmap.close();
+    const jpegBlob: Blob | null = await new Promise((resolve) =>
+      canvas.toBlob((b) => resolve(b), 'image/jpeg', 0.92),
+    );
+    if (!jpegBlob) throw new Error('Could not read this image.');
+    const jpeg = new Uint8Array(await jpegBlob.arrayBuffer());
+    const embedded = await out.embedJpg(jpeg);
+
+    const imgW = swap ? bitmap.width : bitmap.width; // rotated dims already baked into canvas
+    void imgW;
+    const drawW = canvas.width;
+    const drawH = canvas.height;
+
+    if (options.pageSize === 'original') {
+      const page = out.addPage([drawW, drawH]);
+      page.drawImage(embedded, { x: 0, y: 0, width: drawW, height: drawH });
+      continue;
+    }
+
+    const base = PAGE_DIMENSIONS[options.pageSize];
+    const [pw, ph] =
+      options.orientation === 'landscape' ? [Math.max(...base), Math.min(...base)] : [Math.min(...base), Math.max(...base)];
+
+    const page = out.addPage([pw, ph]);
+    const m = options.margin;
+    const boxW = pw - m * 2;
+    const boxH = ph - m * 2;
+
+    let w: number;
+    let h: number;
+    if (options.fit === 'cover') {
+      const scale = Math.max(boxW / drawW, boxH / drawH);
+      w = drawW * scale;
+      h = drawH * scale;
+    } else {
+      const scale = Math.min(boxW / drawW, boxH / drawH);
+      w = drawW * scale;
+      h = drawH * scale;
+    }
+    const x = (pw - w) / 2;
+    const y = (ph - h) / 2;
+    page.drawImage(embedded, { x, y, width: w, height: h });
+  }
+
+  return out.save();
+}
