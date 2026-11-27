@@ -31,6 +31,18 @@ export const PDF_TOOLS = [
     description: 'Shrink PDF file size without uploading your document.',
   },
   {
+    slug: 'pdf-to-jpg',
+    name: 'PDF to JPG',
+    path: '/pdf-to-jpg',
+    description: 'Convert PDF pages into JPG images and download them as a ZIP.',
+  },
+  {
+    slug: 'organize',
+    name: 'Organize PDF',
+    path: '/organize-pdf',
+    description: 'Reorder, rotate, and delete pages with a drag-and-drop view.',
+  },
+  {
     slug: 'add-image',
     name: 'Add Image to PDF',
     path: '/add-image-pdf',

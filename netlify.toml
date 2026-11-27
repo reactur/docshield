@@ -21,6 +21,16 @@ to = "/compress-pdf/index.html"
 status = 200
 
 [[redirects]]
+from = "/pdf-to-jpg"
+to = "/pdf-to-jpg/index.html"
+status = 200
+
+[[redirects]]
+from = "/organize-pdf"
+to = "/organize-pdf/index.html"
+status = 200
+
+[[redirects]]
 from = "/redact-pdf"
 to = "/redact-pdf/index.html"
 status = 200
