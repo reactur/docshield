@@ -127,3 +127,120 @@ export async function applyRedactions(
   }
   return source.save();
 }
+
+export type ImagePlacement = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export async function addImageToPages(
+  data: ArrayBuffer | Uint8Array,
+  imageBytes: Uint8Array,
+  imageType: 'png' | 'jpg',
+  placements: Record<number, ImagePlacement>,
+): Promise<Uint8Array> {
+  const source = await loadPdfBytes(data);
+  const img =
+    imageType === 'png'
+      ? await source.embedPng(imageBytes)
+      : await source.embedJpg(imageBytes);
+  const pages = source.getPages();
+  for (const [pageKey, placement] of Object.entries(placements)) {
+    const pageIndex = parseInt(pageKey, 10);
+    const page = pages[pageIndex];
+    if (!page) continue;
+    page.drawImage(img, {
+      x: placement.x,
+      y: placement.y,
+      width: placement.width,
+      height: placement.height,
+    });
+  }
+  return source.save();
+}
+
+export type TextPlacement = {
+  x: number;
+  y: number;
+  text: string;
+  size: number;
+  color: { r: number; g: number; b: number };
+  rotation?: number;
+};
+
+export async function addTextToPages(
+  data: ArrayBuffer | Uint8Array,
+  placements: Record<number, TextPlacement[]>,
+): Promise<Uint8Array> {
+  const source = await loadPdfBytes(data);
+  const font = await source.embedFont(StandardFonts.Helvetica);
+  const pages = source.getPages();
+  for (const [pageKey, items] of Object.entries(placements)) {
+    const pageIndex = parseInt(pageKey, 10);
+    const page = pages[pageIndex];
+    if (!page) continue;
+    for (const t of items) {
+      page.drawText(t.text, {
+        x: t.x,
+        y: t.y,
+        size: t.size,
+        font,
+        color: rgb(t.color.r, t.color.g, t.color.b),
+        rotate: t.rotation ? degrees(t.rotation) : undefined,
+      });
+    }
+  }
+  return source.save();
+}
+
+export async function addWatermarkToPages(
+  data: ArrayBuffer | Uint8Array,
+  text: string,
+  options: {
+    fontSize?: number;
+    opacity?: number;
+    color?: { r: number; g: number; b: number };
+    rotation?: number;
+  },
+): Promise<Uint8Array> {
+  const source = await loadPdfBytes(data);
+  const font = await source.embedFont(StandardFonts.Helvetica);
+  const pages = source.getPages();
+  const fontSize = options.fontSize ?? 50;
+  const opacity = options.opacity ?? 0.15;
+  const color = options.color ?? { r: 0.6, g: 0.6, b: 0.6 };
+  const rotation = options.rotation ?? 45;
+
+  for (const page of pages) {
+    const { width, height } = page.getSize();
+    const textWidth = font.widthOfTextAtSize(text, fontSize);
+    const textHeight = font.heightAtSize(fontSize);
+    const x = (width - textWidth * Math.cos((rotation * Math.PI) / 180)) / 2;
+    const y = (height - textHeight) / 2;
+    page.drawText(text, {
+      x,
+      y,
+      size: fontSize,
+      font,
+      color: rgb(color.r, color.g, color.b),
+      opacity,
+      rotate: degrees(rotation),
+    });
+  }
+  return source.save();
+}
+
+export async function protectPdf(
+  data: ArrayBuffer | Uint8Array,
+  userPassword: string,
+  ownerPassword?: string,
+): Promise<Uint8Array> {
+  const source = await loadPdfBytes(data);
+  return source.save({
+    useObjectStreams: false,
+    userPassword,
+    ownerPassword: ownerPassword ?? userPassword,
+  });
+}
